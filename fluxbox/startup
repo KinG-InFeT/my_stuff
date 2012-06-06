@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# fluxbox startup-script:
+#  By KinG-InFeT
+
+# Per la keymap:
+xmodmap "/root/.Xmodmap"
+
+#Imposto lo sfondo
+fbsetbg -f /root/img/sfondo.jpg
+
+#impostare programmi in avvio permanenti
+conky &
+/opt/lampp/lampp start &
+
+#deluge &
+
+#sh /root/jd.sh &
+
+#sleep 10
+
+#wbar -bpress -above-desk -pos top -isize 46.0 -balfa 100.0 -falfa 78.0 -zoomf 1.6 -jumpf 1.0 &
+#wbar -bpress -above-desk -pos top &
+
+#da non levare
+exec /usr/bin/fluxbox -log ~/.fluxbox/log
+

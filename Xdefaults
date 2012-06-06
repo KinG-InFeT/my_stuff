@@ -1,0 +1,25 @@
+## By KinG-InFeT
+## Xterm Settings
+
+xterm*font: -*-fixed-medium-r-*-*-18-*-*-*-*-*-*-*
+xterm*geometry: 85x25
+xterm*background: black
+xterm*foreground: lightgrey
+xterm*highlightColor: red
+
+## Rxvt-unicode Settings
+
+urxvt.background: black
+urxvt.foreground: lightgrey
+urxvt.shading: 35
+urxvt.transparent: true
+urxvt.scrollBar: false 
+urxvt.font: -*-fixed-medium-r-*-*-18-*-*-*-*-*-*-*
+#urxvt.font: xft:DejaVuSansMono:size=11 
+#urxvt.boldFont: xft:DejaVuSansMono:size=11:style=bold
+urxvt.geometry: 85x25
+urxvt.cursorBlink: true
+
+URxvt*perl-ext-common:      default,matcher
+URxvt*urlLauncher:          firefox
+URxvt*matcher.button:       1

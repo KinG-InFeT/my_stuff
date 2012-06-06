@@ -1,0 +1,9 @@
+Theme             = darkblood
+SetScreenTitle    = no
+PlaylistFullPaths = no
+ShowHiddenFiles   = no
+ReadTags          = yes
+
+FormatString = "%(n:%n - :)%(t:%t:)%(A: \(%A\):)%(a: {%a}:)"
+
+OnSongChange = "echo %a %t d %r > /tmp/moc_tmp"

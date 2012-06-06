@@ -1,0 +1,128 @@
+# FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
+# Version 0.8.3
+
+[begin] (Menu FluxBox)
+
+[encoding] {UTF-8}
+	[exec] (urxvt)        {urxvt}           </usr/share/pixmaps/shell.png>
+	[exec] (Firefox)      {firefox}         </usr/share/pixmaps/firefox.png>
+	[exec] (Thunderbird)  {thunderbird-bin} </usr/portage/mail-client/thunderbird-bin/files/icon/thunderbird-bin-icon.png>
+	[exec] (Thunar)       {thunar}          </usr/share/pixmaps/Thunar/Thunar-about-logo.png>
+	[exec] (Emesene)      {emesene-2}       </usr/share/pixmaps/emesene-2.png>
+[separator]
+	[submenu] (Terminals)  </usr/share/icons/hicolor/48x48/xfce-terminal.png>
+		[exec]	(Zsh)	        {zsh}
+		[exec]	(Terminator)    {terminator}    </usr/share/pixmaps/terminator.jpg>
+	    [exec]	(Eterm)         {Eterm}         </usr/share/icons/gentoo/32x32/Eterm.png>
+	    [exec]	(xterm)         {xterm} 
+	    [exec]	(urxvt)         {urxvt} 
+	[end]
+	[submenu] (Emulation)
+		[exec]  (VirtualBox)    {VirtualBox}            </usr/share/pixmaps/virtualbox-bin.png>
+        [exec]  (PCSX-DF)       {/usr/games/bin/pcsx}   </usr/share/pixmaps/pcsx-icon.png>
+	[end]
+	[submenu] (Network)
+		[exec]	(irssi)         {urxvt -e irssi}
+		[exec]  (jDownloader)   {sh /root/jd.sh}
+    	[exec]	(Putty)         {putty}             </usr/share/pixmaps/putty.jpg>
+		[separator]
+		[submenu] (Port Scanner)
+			[exec]	(ZenMap) {zenmap} <usr/share/pixmaps/nmap-logo-64.png>
+		[end]
+		[submenu] (Client Tottent)
+			[exec]	(Deluge) {deluge}	</usr/share/pixmaps/deluge.png>
+		[end]
+		[submenu] (FTP)
+		      [exec]	(FileZilla) {filezilla} </usr/share/pixmaps/filezilla.png>
+		[end]
+		[submenu] (IM)
+			[exec]	(Emesene v9999 [DEBUG])     {emesene-2 -vvv 2&>> /var/log/emesene}  </usr/share/pixmaps/emesene-2.png>
+			[exec]	(CenterIM)          {urxvt -e centerim}
+			[exec]	(aMSN)              {amsn}  </usr/share/pixmaps/amsn.png>
+			[exec]	(Skype)             {skype-bin}
+		[end]
+		[submenu] (Browser)
+	    	  [exec]	(Firefox)   {firefox}   </usr/share/pixmaps/firefox.png>
+	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root}  </usr/share/pixmaps/chromium-browser.png>
+	    	  [exec]	(Opera)     {opera}
+		[end]
+	[end]
+	[submenu] (Text Editors)
+	      [exec]   (nano)   {urxvt -e nano} 
+	      [exec]   (vim)    {urxvt -e vim}  </usr/share/icons/gentoo/32x32/vim.png>
+	[end]
+    [submenu] (IDE Programming)
+		[exec] (Glade GTK+)  {glade}           </usr/share/icons/hicolor/32x32/apps/glade.png>
+		[exec] (BlueGriffon) {bluegriffon-bin} </usr/share/pixmaps/bluegriffon-bin.png>
+		[exec] (Geany)       {geany}           </usr/share/pixmaps/geany.png>
+        [exec] (gedit)       {gedit}           </usr/share/icons/gentoo/32x32/gedit.png>
+	[end]
+	[submenu] (Graphic Editors)
+	      [exec]   (Gimp) {gimp} </usr/share/pixmaps/gimp.png>
+	[end]
+    [submenu] (Games)
+	      [exec]    (Asteroid)          {urxvt -e /usr/games/bin/asteroid}
+	      [exec]    (ASCII Invaders)    {urxvt -e /usr/games/bin/ascii-invaders}
+   	      [exec]    (PacMan)            {/usr/games/bin/pacmanarena}
+	      [exec]    (Super Tux)         {/usr/games/bin/supertux}
+   	      [exec]    (Crash Test)        {/usr/games/bin/crashtest}
+	      [exec]    (Trigger [Relly])   {/usr/games/bin/trigger} </usr/share/pixmaps/trigger.png>
+	      [exec]    (xMoto)             {/usr/games/bin/xmoto} </usr/share/pixmaps/xmoto.xpm>
+	      [exec]    (Speed Dreams)      {/usr/games/bin/speed-dreams} </usr/share/pixmaps/speed-dreams.svg>
+	      [exec]    (PlayOnLinux)       {/usr/games/bin/playonlinux}  <usr/share/pixmaps/playonlinux.png>
+   	      [exec]    (Armagetronad)      {/usr/games/bin/armagetronad}
+   	      [exec]    (Ultimate Stuts)    {/usr/games/bin/ustunts} </usr/share/pixmaps/ultimatestunts.png>
+   	      [exec]    (Extreme-TuxRacer)  {/usr/games/bin/etracer}
+   	      [exec]    (Racer-bin)         {urxvt -e /usr/games/bin/racer} #http://forums.gentoo.org/viewtopic-t-46555-start-0.html
+   	      [exec]    (Battaglia Navale)  {urxvt -e /usr/games/bin/gnugo}
+	[end]
+	[submenu] (Office)
+	    [exec]  (LibreOffice) {libreoffice} </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
+	[end]	    
+	[submenu] (Multimedia)  </usr/share/icons/hicolor/48x48/xfce-multimedia.png>
+	      [exec]	(alsamixer) {urxvt -e alsamixer}
+	      [exec]	(Audacious) {audacious} </usr/share/pixmaps/audacious2.png>
+	      [exec]	(MOC)       {urxvt -e mocp}  </usr/share/pixmaps/timidity.xpm>
+	[end]
+	[submenu] (Edit System File)
+    	[exec]   (Edit FluxBox Menu)        {gedit ~/.fluxbox/menu}
+    	[exec]   (Edit make.conf)           {gedit /etc/make.conf}
+    	[exec]   (Edit BashRC)              {gedit ~/.bashrc}
+    	[exec]   (Edit XinitRC)             {gedit ~/.xinitrc}
+    	[exec]   (Edit xorg.conf)           {gedit /etc/X11/xorg.conf}
+    	[exec]   (Edit FluxBox Startup)     {gedit ~/.fluxbox/startup}
+    	[exec]	 (Edit FluxBox Keys)        {gedit ~/.fluxbox/keys}
+    	[exec]   (Edit ConkyRC)             {gedit ~/.conkyrc}
+    	[exec]   (Edit VimRC)               {gedit ~/.vimrc}
+    	[exec]   (Edit Xdefault)            {gedit ~/.Xdefaults}
+	[end]
+[separator]
+	[submenu] (System Tools)
+		[exec]    (Top)     {urxvt -e top}
+		[exec]    (H-Top)   {urxvt -e htop} </usr/share/pixmaps/htop.png>
+		[exec]    (Run The Command) {fbrun}
+	[end]
+	[submenu] (Fluxbox menu)
+	      [config] (Configure) 
+	[submenu] (Styles)
+	      [include] (/usr/share/fluxbox/menu.d/styles/) 
+	[end]
+[workspaces] (Workspace List) 
+	[submenu] (Tools)
+	      [exec] (Window name)  {xprop WM_CLASS|cut -d \" -f 2|xmessage -file - -center} 
+	      [exec] (Run)          {fbrun} 
+	      [exec] (Regen Menu)   {fluxbox-generate_menu -ds -is} 
+	[end]
+	[submenu] (Window Managers)
+	      [restart] (twm) {twm} 
+	[end]
+      [commanddialog] (Fluxbox Command) 
+      [reconfig] (Reload config) 
+      [restart] (Restart) 
+      [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -file - -center} 
+      [separator] 
+      [exit] (Exit) 
+[end]
+[endencoding]
+[end]
+

@@ -1,0 +1,85 @@
+# Conkyrc v4.0.2 By KinG-InFeT ~ http://www.kinginfet.net/
+# file '/etc/conky/conky.conf' or '~/.conkyrc'
+
+background no
+xftfont NeogreyRegular:size=8
+xftalpha 0.8
+update_interval 3.0
+total_run_times 0
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 220 5
+maximum_width 300
+draw_shades yes
+draw_outline yes
+draw_borders no
+draw_graph_borders no
+default_color white
+default_shade_color black
+alignment top_right
+gap_x 12
+gap_y 35
+no_buffers yes
+cpu_avg_samples 2
+override_utf8_locale no
+uppercase no
+
+
+TEXT
+${color white}${alignc} Gentoo Linux$color
+${color white}${alignc}$sysname $kernel ($machine)
+
+Time: $alignr${time %H:%M}
+Date: $alignr${time %a,}${time %B %e}
+Hostname: $alignr$nodename
+Kernel: $alignr$kernel
+Uptime: $alignr$uptime_short
+Local IP: ${alignr}${addr eth0}
+
+${color white}Monitor System $stippled_hr${color}
+
+Frequenza CPU: $freq_g Ghz
+
+CPU model: Pentium(R) Dual Core @ E5400
+
+Core 1: ${cpu cpu1}% ${cpubar cpu1}
+Core 2: ${cpu cpu2}% ${cpubar cpu2}
+
+${color white}RAM : ${color grey}$mem / $memmax
+$memperc% ${color light grey}${membar 6}
+${color white}Swap : ${color grey}$swap / $swapmax
+$swapperc% ${color light grey}${swapbar 6}
+
+${color white}Hard Drive $stippled_hr${color}
+
+${color white}HOME: $alignr Free: ${fs_free /home} / ${fs_size /home}$color
+${color light grey}${fs_bar 3 /home}
+${color white}DATI: $alignr Free: ${fs_free /dati} / ${fs_size /dati}$color
+${color light grey}${fs_bar 3 /dati}
+$color
+${color white}Process Monitor System $stippled_hr${color}
+
+${color white}Processes${alignr} CPU   Mem${color}${color light grey}
+${top name 1}${alignr}${top cpu 1}${alignr }${top mem 1}
+${top name 2}${alignr}${top cpu 2}${alignr }${top mem 2}
+${top name 3}${alignr}${top cpu 3}${alignr }${top mem 3}
+${top name 4}${alignr}${top cpu 4}${alignr }${top mem 4}
+${top name 5}${alignr}${top cpu 5}${alignr }${top mem 5}
+
+${color white}Network: ${color #BBBBBB} eth0_$stippled_hr
+
+${color #888888}DOWN: ${color #CCCCCC}${downspeed eth0} k/s	    ${color #888888}UP: ${color #CCCCCC}${upspeed eth0} k/s
+${color #888888}${downspeedgraph eth0 25,100 ff0000 0000ff}	  ${color #888888}${upspeedgraph eth0 25,100 0000ff ff0000}
+${color #888888}TOTAL: ${color #CCCCCC}${totaldown eth0}	        ${color #888888}TOTAL: ${color #CCCCCC}${totalup eth0}
+
+${color white}Server Connection ${alignr} ${color white}Remote Service/Port
+
+${tcp_portmon 32768 61000 rhost 0} ${alignr} ${tcp_portmon 32768 61000 rservice 0}
+${tcp_portmon 32768 61000 rhost 1} ${alignr} ${tcp_portmon 32768 61000 rservice 1}
+${tcp_portmon 32768 61000 rhost 2} ${alignr} ${tcp_portmon 32768 61000 rservice 2}
+${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
+${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
+${tcp_portmon 32768 61000 rhost 5} ${alignr} ${tcp_portmon 32768 61000 rservice 5}
