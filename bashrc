@@ -21,11 +21,11 @@ alias ls="ls --color=auto"
 alias reboot="shutdown -r now"
 alias shut="shutdown -h now"
 
-alias pacman="pacman-color"
+alias makepkg="makepkg --asroot"
 
-# Usage: extract <nome_file>
+# Usage: estrai <nome_file>
 # Estrazione di diversi pacchetti di archiviazione
-function extract() {
+function estrai() {
   if [ -f $1 ] ; then
       case $1 in
           *.tar.bz2)   tar xvjf $1    ;;
@@ -117,3 +117,4 @@ function clear_system() {
     echo "Clear COMPLETE!!";
 
 }
+

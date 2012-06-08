@@ -6,9 +6,6 @@
 # Per la keymap:
 xmodmap "/root/.Xmodmap"
 
-#Imposto lo sfondo
-fbsetbg -f /root/img/sfondo.jpg
-
 #impostare programmi in avvio permanenti
 conky &
 /opt/lampp/lampp start &
@@ -24,4 +21,5 @@ conky &
 
 #da non levare
 exec /usr/bin/fluxbox -log ~/.fluxbox/log
+
 

@@ -64,3 +64,4 @@ Mod1 F2 :Exec thunar
 Mod1 F3 :Exec firefox
 Mod1 F5 :Exec gedit
 Mod1 F6 :Exec filezilla
+

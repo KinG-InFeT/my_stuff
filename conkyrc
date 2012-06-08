@@ -1,4 +1,4 @@
-# Conkyrc v4.0.2 By KinG-InFeT ~ http://www.kinginfet.net/
+# Conkyrc v4.0.3 By KinG-InFeT ~ http://www.kinginfet.net/
 # file '/etc/conky/conky.conf' or '~/.conkyrc'
 
 background no
@@ -29,7 +29,7 @@ uppercase no
 
 
 TEXT
-${color white}${alignc} Gentoo Linux$color
+${color white}${alignc} ArchLinux$color
 ${color white}${alignc}$sysname $kernel ($machine)
 
 Time: $alignr${time %H:%M}
@@ -55,8 +55,8 @@ $swapperc% ${color light grey}${swapbar 6}
 
 ${color white}Hard Drive $stippled_hr${color}
 
-${color white}HOME: $alignr Free: ${fs_free /home} / ${fs_size /home}$color
-${color light grey}${fs_bar 3 /home}
+${color white}HOME: $alignr Free: ${fs_free /root} / ${fs_size /root}$color
+${color light grey}${fs_bar 3 /root}
 ${color white}DATI: $alignr Free: ${fs_free /dati} / ${fs_size /dati}$color
 ${color light grey}${fs_bar 3 /dati}
 $color
@@ -83,3 +83,4 @@ ${tcp_portmon 32768 61000 rhost 2} ${alignr} ${tcp_portmon 32768 61000 rservice 
 ${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
 ${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
 ${tcp_portmon 32768 61000 rhost 5} ${alignr} ${tcp_portmon 32768 61000 rservice 5}
+
