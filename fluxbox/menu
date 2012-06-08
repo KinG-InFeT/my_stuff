@@ -1,33 +1,33 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# Version 0.9.0
+# Version 0.9.1
 
 [begin] (ArchLinux Menu)
 
 [encoding] {UTF-8}
 	[exec] (urxvt)        {urxvt}           
-	[exec] (Firefox)      {firefox}         </usr/share/pixmaps/firefox.png>
-	[exec] (Thunderbird)  {thunderbird}     </usr/portage/mail-client/thunderbird-bin/files/icon/thunderbird-bin-icon.png>
+	[exec] (Firefox)      {firefox}         </usr/share/icons/hicolor/48x48/apps/firefox.png>
+	[exec] (Thunderbird)  {thunderbird}     </usr/share/icons/hicolor/48x48/apps/thunderbird.png>
 	[exec] (Thunar)       {thunar}          </usr/share/pixmaps/Thunar/Thunar-about-logo.png>
 	[exec] (Emesene)      {emesene2}        </usr/share/pixmaps/emesene2.png>
 [separator]
 	[submenu] (Terminals)
-	    [exec]	(xterm)         {xterm}
+	    [exec]	(xterm)         {xterm} </usr/share/pixmaps/xterm-color_48x48.xpm>
 	    [exec]	(urxvt)         {urxvt}
 	[end]
 	[submenu] (Emulation)
-		[exec]  (VirtualBox)    {VirtualBox}            </usr/share/pixmaps/virtualbox-bin.png>
-        [exec]  (PCSX-DF)       {/usr/games/bin/pcsx}   </usr/share/pixmaps/pcsx-icon.png>
+		[exec]  (VirtualBox)    {VirtualBox}    </usr/share/pixmaps/VBox.png>
+        [exec]  (PCSX-DF)       {pcsx}          </usr/share/pixmaps/pcsx-icon.png>
 	[end]
 	[submenu] (Network)
 		[exec]	(irssi)         {urxvt -e irssi}
 		[exec]  (jDownloader)   {sh /root/jd.sh}
-    	[exec]	(Putty)         {putty}             </usr/share/pixmaps/putty.jpg>
+    	[exec]	(Putty)         {putty}
 		[separator]
 		[submenu] (Port Scanner)
 			[exec]	(ZenMap) {zenmap} <usr/share/pixmaps/nmap-logo-64.png>
 		[end]
 		[submenu] (Client Tottent)
-			[exec]	(Deluge) {deluge}	</usr/share/icons/hicolor/36x36/apps/deluge.png>
+			[exec]	(Deluge) {deluge}	</usr/share/pixmaps/deluge.png>
 		[end]
 		[submenu] (FTP)
 		      [exec]	(FileZilla) {filezilla} </usr/share/pixmaps/filezilla.png>
@@ -36,42 +36,42 @@
 			[exec]	(Emesene GIT [DEBUG])     {emesene2 -vvv 2&>> /var/log/emesene}  </usr/share/pixmaps/emesene2.png>
 			[exec]	(CenterIM)          {urxvt -e centerim}
 			[exec]	(aMSN)              {amsn}  </usr/share/pixmaps/amsn.png>
-			[exec]	(Skype)             {skype-bin}
+			[exec]	(Skype)             {skype}
 		[end]
 		[submenu] (Browser)
-	    	  [exec]	(Firefox)   {firefox}   </usr/share/pixmaps/firefox.png>
-	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root}  </usr/share/pixmaps/chromium-browser.png>
+	    	  [exec]	(Firefox)   {firefox}   </usr/share/icons/hicolor/48x48/apps/firefox.png>
+	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root}  </usr/share/icons/hicolor/48x48/apps/chromium.png>
 	    	  [exec]	(Opera)     {opera}
 		[end]
 	[end]
 	[submenu] (Text Editors)
 	      [exec]   (nano)   {urxvt -e nano} 
-	      [exec]   (vim)    {urxvt -e vim}  </usr/share/icons/gentoo/32x32/vim.png>
+	      [exec]   (vim)    {urxvt -e vim}
 	[end]
     [submenu] (IDE Programming)
-		[exec] (Glade GTK+)  {glade}           </usr/share/icons/hicolor/32x32/apps/glade.png>
-		[exec] (BlueGriffon) {bluegriffon-bin} </usr/share/pixmaps/bluegriffon-bin.png>
-		[exec] (Geany)       {geany}           </usr/share/pixmaps/geany.png>
-        [exec] (gedit)       {gedit}           </usr/share/icons/gentoo/32x32/gedit.png>
+		[exec] (Glade GTK+)  {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
+		[exec] (BlueGriffon) {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
+		[exec] (Geany)       {geany}            </usr/share/pixmaps/geany.png>
+        [exec] (gedit)       {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
 	[end]
 	[submenu] (Graphic Editors)
-	      [exec]   (Gimp) {gimp} </usr/share/pixmaps/gimp.png>
+	      [exec]   (Gimp) {gimp} </usr/share/icons/hicolor/48x48/apps/gimp.png>
 	[end]
     [submenu] (Games)
-	      [exec]    (Asteroid)          {urxvt -e /usr/games/bin/asteroid}
-	      [exec]    (ASCII Invaders)    {urxvt -e /usr/games/bin/ascii-invaders}
-   	      [exec]    (PacMan)            {/usr/games/bin/pacmanarena}
-	      [exec]    (Super Tux)         {/usr/games/bin/supertux}
-   	      [exec]    (Crash Test)        {/usr/games/bin/crashtest}
-	      [exec]    (Trigger [Relly])   {/usr/games/bin/trigger} </usr/share/pixmaps/trigger.png>
-	      [exec]    (xMoto)             {/usr/games/bin/xmoto} </usr/share/pixmaps/xmoto.xpm>
-	      [exec]    (Speed Dreams)      {/usr/games/bin/speed-dreams} </usr/share/pixmaps/speed-dreams.svg>
-	      [exec]    (PlayOnLinux)       {/usr/games/bin/playonlinux}  <usr/share/pixmaps/playonlinux.png>
-   	      [exec]    (Armagetronad)      {/usr/games/bin/armagetronad}
-   	      [exec]    (Ultimate Stuts)    {/usr/games/bin/ustunts} </usr/share/pixmaps/ultimatestunts.png>
-   	      [exec]    (Extreme-TuxRacer)  {/usr/games/bin/etracer}
-   	      [exec]    (Racer-bin)         {urxvt -e /usr/games/bin/racer} #http://forums.gentoo.org/viewtopic-t-46555-start-0.html
-   	      [exec]    (vDrift)            {vdrift}
+	      [exec]    (Asteroid)          {asteroid}
+	      [exec]    (ASCII Invaders)    {urxvt -e ascii_invaders}
+   	      [exec]    (PacMan)            {pacmanarena}
+	      [exec]    (Super Tux)         {supertux2}     </usr/share/pixmaps/supertux.png>
+   	      [exec]    (Crash Test)        {crashtest}
+	      [exec]    (Trigger [Relly])   {trigger}       </usr/share/pixmaps/trigger.png>
+	      [exec]    (xMoto)             {xmoto}         </usr/share/pixmaps/xmoto.xpm>
+	      [exec]    (Speed Dreams)      {speed-dreams}  </usr/share/pixmaps/speed-dreams.svg>
+	      [exec]    (Torcs)             {torcs}         </usr/share/pixmaps/torcs.png>
+	      [exec]    (PlayOnLinux)       {playonlinux}   </usr/share/pixmaps/playonlinux32.png>
+   	      [exec]    (Armagetronad)      {armagetronad}  </usr/share/pixmaps/armagetronad.png>
+   	      [exec]    (Ultimate Stuts)    {ustunts}       </usr/share/pixmaps/ultimatestunts.png>
+   	      [exec]    (Extreme-TuxRacer)  {etracer}
+   	      [exec]    (vDrift)            {vdrift}        </usr/share/pixmaps/vdrift.png>
 	[end]
 	[submenu] (Office)
 	    [exec]  (LibreOffice) {libreoffice} </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
