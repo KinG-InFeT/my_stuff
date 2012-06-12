@@ -6,6 +6,9 @@
 # Per la keymap:
 xmodmap "/root/.Xmodmap"
 
+#impostare sfondo default
+feh --bg-scale /root/img/sfondo.jpg
+
 #impostare programmi in avvio permanenti
 conky &
 /opt/lampp/lampp start &
