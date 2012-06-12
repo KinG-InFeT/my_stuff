@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# Version 0.9.1
+# Version 0.9.2
 
 [begin] (ArchLinux Menu)
 
@@ -20,7 +20,7 @@
 	[end]
 	[submenu] (Network)
 		[exec]	(irssi)         {urxvt -e irssi}
-		[exec]  (jDownloader)   {sh /root/jd.sh}
+		[exec]  (jDownloader)   {jdownloader}   </usr/share/icons/hicolor/48x48/apps/jdownloader.png>
     	[exec]	(Putty)         {putty}
 		[separator]
 		[submenu] (Port Scanner)
