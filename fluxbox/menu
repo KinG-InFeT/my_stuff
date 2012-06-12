@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# Version 0.9.2
+# Version 0.9.3
 
 [begin] (ArchLinux Menu)
 
@@ -49,10 +49,10 @@
 	      [exec]   (vim)    {urxvt -e vim}
 	[end]
     [submenu] (IDE Programming)
-		[exec] (Glade GTK+)  {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
-		[exec] (BlueGriffon) {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
-		[exec] (Geany)       {geany}            </usr/share/pixmaps/geany.png>
-        [exec] (gedit)       {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
+		[exec] (Glade GTK+)     {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
+		[exec] (NetBeans)       {netbeans}         </usr/share/pixmaps/netbeans.png>
+		[exec] (BlueGriffon)    {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
+        [exec] (gedit)          {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
 	[end]
 	[submenu] (Graphic Editors)
 	      [exec]   (Gimp) {gimp} </usr/share/icons/hicolor/48x48/apps/gimp.png>
