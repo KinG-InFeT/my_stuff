@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# Version 0.9.3
+# Version 0.10.0
 
 [begin] (ArchLinux Menu)
 
@@ -7,11 +7,11 @@
 	[exec] (urxvt)        {urxvt}           
 	[exec] (Firefox)      {firefox}         </usr/share/icons/hicolor/48x48/apps/firefox.png>
 	[exec] (Thunderbird)  {thunderbird}     </usr/share/icons/hicolor/48x48/apps/thunderbird.png>
-	[exec] (Thunar)       {thunar}          </usr/share/pixmaps/Thunar/Thunar-about-logo.png>
-	[exec] (Emesene)      {emesene2}        </usr/share/pixmaps/emesene2.png>
+	[exec] (Thunar)       {thunar}          </usr/share/icons/hicolor/64x64/apps/Thunar.png>
+	[exec] (Emesene)      {echo "" > /var/log/emesene && emesene2 -vvv 2&>> /var/log/emesene}        </usr/share/pixmaps/emesene2.png>
 [separator]
 	[submenu] (Terminals)
-	    [exec]	(xterm)         {xterm} </usr/share/pixmaps/xterm-color_48x48.xpm>
+	    [exec]	(xterm)         {xterm}     </usr/share/pixmaps/xterm-color_48x48.xpm>
 	    [exec]	(urxvt)         {urxvt}
 	[end]
 	[submenu] (Emulation)
@@ -33,10 +33,10 @@
 		      [exec]	(FileZilla) {filezilla} </usr/share/pixmaps/filezilla.png>
 		[end]
 		[submenu] (IM)
-			[exec]	(Emesene GIT [DEBUG])     {emesene2 -vvv 2&>> /var/log/emesene}  </usr/share/pixmaps/emesene2.png>
+			[exec]	(Emesene GIT [DEBUG])     {echo "" > /var/log/emesene && emesene2 -vvv 2&>> /var/log/emesene}  </usr/share/pixmaps/emesene2.png>
 			[exec]	(CenterIM)          {urxvt -e centerim}
 			[exec]	(aMSN)              {amsn}  </usr/share/pixmaps/amsn.png>
-			[exec]	(Skype)             {skype}
+			[exec]	(Skype)             {skype} </usr/share/pixmaps/skype.png>
 		[end]
 		[submenu] (Browser)
 	    	  [exec]	(Firefox)   {firefox}   </usr/share/icons/hicolor/48x48/apps/firefox.png>
@@ -51,6 +51,8 @@
     [submenu] (IDE Programming)
 		[exec] (Glade GTK+)     {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
 		[exec] (NetBeans)       {netbeans}         </usr/share/pixmaps/netbeans.png>
+    	[exec] (Lazarus)        {lazarus}          <>
+		[exec] (Aptana)         {aptana}           </usr/share/pixmaps/aptana.xpm>
 		[exec] (BlueGriffon)    {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
         [exec] (gedit)          {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
 	[end]
@@ -58,7 +60,7 @@
 	      [exec]   (Gimp) {gimp} </usr/share/icons/hicolor/48x48/apps/gimp.png>
 	[end]
     [submenu] (Games)
-	      [exec]    (Asteroid)          {asteroid}
+	      [exec]    (Asteroid)          {asteroid}      </usr/share/icons/hicolor/scalable/apps/asteroid.svg>
 	      [exec]    (ASCII Invaders)    {urxvt -e ascii_invaders}
    	      [exec]    (PacMan)            {pacmanarena}
 	      [exec]    (Super Tux)         {supertux2}     </usr/share/pixmaps/supertux.png>
@@ -71,15 +73,21 @@
    	      [exec]    (Armagetronad)      {armagetronad}  </usr/share/pixmaps/armagetronad.png>
    	      [exec]    (Ultimate Stuts)    {ustunts}       </usr/share/pixmaps/ultimatestunts.png>
    	      [exec]    (Extreme-TuxRacer)  {etracer}
+   	      [exec]    (MiniRacer)         {miniracer}
    	      [exec]    (vDrift)            {vdrift}        </usr/share/pixmaps/vdrift.png>
+   	      [exec]    (PokerTH)           {pokerth}       </usr/share/pokerth/data/gfx/gui/misc/windowicon.png>
+   	      [exec]    (MineTest)          {minetest}      </usr/share/icons/hicolor/scalable/apps/minetest-icon.svg>
 	[end]
 	[submenu] (Office)
 	    [exec]  (LibreOffice) {libreoffice} </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
 	[end]	    
 	[submenu] (Multimedia)  </usr/share/icons/hicolor/48x48/xfce-multimedia.png>
 	      [exec]	(alsamixer) {urxvt -e alsamixer}
-	      [exec]	(Audacious) {audacious}         </usr/share/pixmaps/audacious2.png>
 	      [exec]	(MOC)       {urxvt -e mocp}     </usr/share/pixmaps/timidity.xpm>
+	[end]
+	[submenu] (Others)
+	    [exec]	(CMatrix)         {urxvt -e cmatrix -BC green}
+	    [exec]	(TeamViewer)      {teamviewer7}                 </opt/teamviewer/teamviewer/7/desktop/teamviewer.png>
 	[end]
 	[submenu] (Edit System File)
     	[exec]   (Edit FluxBox Menu)        {gedit ~/.fluxbox/menu}
