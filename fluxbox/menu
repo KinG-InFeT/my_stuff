@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# Version 0.10.0
+# v0.10.1
 
 [begin] (ArchLinux Menu)
 
@@ -101,6 +101,7 @@
     	[exec]   (Edit ConkyRC)             {gedit ~/.conkyrc}
     	[exec]   (Edit VimRC)               {gedit ~/.vimrc}
     	[exec]   (Edit Xdefault)            {gedit ~/.Xdefaults}
+    	[exec]   (Edit PacMan Conf)         {gedit /etc/pacman.conf}
 	[end]
 [separator]
     [submenu] (Backgrounds)

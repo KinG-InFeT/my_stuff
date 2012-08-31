@@ -12,6 +12,7 @@ feh --bg-scale /root/img/sfondo.jpg
 #impostare programmi in avvio permanenti
 conky &
 /opt/lampp/lampp start &
+/usr/lib/notification-daemon-1.0/notification-daemon &
 
 #deluge &
 
