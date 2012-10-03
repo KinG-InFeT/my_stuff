@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# v0.10.1
+# v0.10.2
 
 [begin] (ArchLinux Menu)
 
@@ -37,11 +37,12 @@
 			[exec]	(CenterIM)          {urxvt -e centerim}
 			[exec]	(aMSN)              {amsn}  </usr/share/pixmaps/amsn.png>
 			[exec]	(Skype)             {skype} </usr/share/pixmaps/skype.png>
+			[exec]  (Pidgin)            {pidgin} </usr/share/icons/hicolor/48x48/apps/pidgin.png>
 		[end]
 		[submenu] (Browser)
 	    	  [exec]	(Firefox)   {firefox}   </usr/share/icons/hicolor/48x48/apps/firefox.png>
 	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root}  </usr/share/icons/hicolor/48x48/apps/chromium.png>
-	    	  [exec]	(Opera)     {opera}
+	    	  [exec]    (Midori)    {midori} </usr/share/icons/hicolor/48x48/apps/midori.png>
 		[end]
 	[end]
 	[submenu] (Text Editors)
@@ -57,7 +58,13 @@
         [exec] (gedit)          {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
 	[end]
 	[submenu] (Graphic Editors)
-	      [exec]   (Gimp) {gimp} </usr/share/icons/hicolor/48x48/apps/gimp.png>
+	      [exec]    (Gimp)      {gimp}      </usr/share/icons/hicolor/48x48/apps/gimp.png>
+	[end]
+	[submenu] (Video Editor)
+	      [exec]    (OpenShot)  {openshot}  </usr/lib/python2.7/site-packages/openshot/effects/icons/small/vignette.png>
+	[end]
+	[submenu] (Audio Editor)
+	      [exec]    (Mixxx)  {mixxx}  </usr/share/pixmaps/mixxx-icon.png>
 	[end]
     [submenu] (Games)
 	      [exec]    (Asteroid)          {asteroid}      </usr/share/icons/hicolor/scalable/apps/asteroid.svg>
@@ -77,17 +84,26 @@
    	      [exec]    (vDrift)            {vdrift}        </usr/share/pixmaps/vdrift.png>
    	      [exec]    (PokerTH)           {pokerth}       </usr/share/pokerth/data/gfx/gui/misc/windowicon.png>
    	      [exec]    (MineTest)          {minetest}      </usr/share/icons/hicolor/scalable/apps/minetest-icon.svg>
+   	      [exec]    (FlightGear)        {/usr/bin/fgfs} </usr/share/icons/flightgear.ico>
 	[end]
 	[submenu] (Office)
-	    [exec]  (LibreOffice) {libreoffice} </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
+	    [exec]  (LibreOffice Start) {libreoffice}           </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
+   	    [exec]  (Writer)            {libreoffice --writer}  </usr/share/icons/hicolor/32x32/apps/libreoffice-writer.png>
+   	    [exec]  (Impress)           {libreoffice --impress} </usr/share/icons/hicolor/32x32/apps/libreoffice-impress.png>
+   	    [exec]  (Math)              {libreoffice --math}    </usr/share/icons/hicolor/32x32/apps/libreoffice-math.png>
+   	    [exec]  (Calc)              {libreoffice --calc}    </usr/share/icons/hicolor/32x32/apps/libreoffice-calc.png>
+   	    [exec]  (Base)              {libreoffice --base}    </usr/share/icons/hicolor/32x32/apps/libreoffice-base.png>
+   	    [exec]  (Draw)              {libreoffice --draw}    </usr/share/icons/hicolor/32x32/apps/libreoffice-draw.png>
 	[end]	    
 	[submenu] (Multimedia)  </usr/share/icons/hicolor/48x48/xfce-multimedia.png>
 	      [exec]	(alsamixer) {urxvt -e alsamixer}
 	      [exec]	(MOC)       {urxvt -e mocp}     </usr/share/pixmaps/timidity.xpm>
 	[end]
 	[submenu] (Others)
-	    [exec]	(CMatrix)         {urxvt -e cmatrix -BC green}
-	    [exec]	(TeamViewer)      {teamviewer7}                 </opt/teamviewer/teamviewer/7/desktop/teamviewer.png>
+	    [exec]	(CMatrix)           {urxvt -e cmatrix -BC green}
+	    [exec]	(TeamViewer)        {teamviewer7}                 </opt/teamviewer/teamviewer/7/desktop/teamviewer.png>
+        [exec]  (Metasploit GUI)    {/opt/metasploit/msfgui}
+        [exec]  (Metasploit CLI)    {/opt/metasploit/msfconsole}
 	[end]
 	[submenu] (Edit System File)
     	[exec]   (Edit FluxBox Menu)        {gedit ~/.fluxbox/menu}
@@ -103,6 +119,8 @@
     	[exec]   (Edit Xdefault)            {gedit ~/.Xdefaults}
     	[exec]   (Edit PacMan Conf)         {gedit /etc/pacman.conf}
 	[end]
+[separator]
+    [exec] (Nvidia Settings) {/usr/bin/nvidia-settings} </usr/share/pixmaps/nvidia-settings.png>
 [separator]
     [submenu] (Backgrounds)
         [wallpapers] (/root/img) {feh --bg-scale}
