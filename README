@@ -1,9 +1,8 @@
-My Stuff
-=======
+                .::My Stuff::.
 
 Various configuration files in my linux distro.
 
-My Software Installed:
+Software Installed:
 feh
 firefox {with add-on: Adblock Plus, 
                       BugMenNot, 
@@ -12,7 +11,7 @@ firefox {with add-on: Adblock Plus,
                       Easy Youtube Video Downloader, 
                       FireBug, 
                       Passowrd Exporter, 
-                      Stylish, 
+                      Stylish -> SSLDistro Archlinux Search, 
                       Wappalyzer
          }
 thunderbird {with add-on: MinimizeToTray Revived (MinTrayR)}
