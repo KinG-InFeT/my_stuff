@@ -39,7 +39,7 @@ PS1="$RED$MYL1$MYL3[$WHITE\u$RED]$WHITE @ $RED[$WHITE\h$RED]
 $MYL2$RED[$WHITE(\w)$RED] > $NONE"
 
 alias sprunger="curl -F 'sprunge=<-' http://sprunge.us"
-alias moc=mocp
+alias moc="mocp /dati/[Song]/CDs/"
 alias vi=vim
 alias tail="tail -lf"
 
