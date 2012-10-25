@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# v0.10.2
+# v0.10.3
 
 [begin] (ArchLinux Menu)
 
@@ -49,6 +49,7 @@
 	      [exec]   (nano)   {urxvt -e nano} 
 	      [exec]   (vim)    {urxvt -e vim}
 	[end]
+    [separator]
     [submenu] (IDE Programming)
 		[exec] (Glade GTK+)     {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
 		[exec] (NetBeans)       {netbeans}         </usr/share/pixmaps/netbeans.png>
@@ -57,6 +58,11 @@
 		[exec] (BlueGriffon)    {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
         [exec] (gedit)          {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
 	[end]
+    [submenu] (Android-Dev)
+        [exec] (Eclipse)                {eclipse}   </usr/share/icons/hicolor/48x48/apps/eclipse.png>
+        [exec] (Android SDK Manager)    {android}   </usr/share/pixmaps/android-sdk.png>
+    [end]
+    [separator]
 	[submenu] (Graphic Editors)
 	      [exec]    (Gimp)      {gimp}      </usr/share/icons/hicolor/48x48/apps/gimp.png>
 	[end]
@@ -85,6 +91,7 @@
    	      [exec]    (PokerTH)           {pokerth}       </usr/share/pokerth/data/gfx/gui/misc/windowicon.png>
    	      [exec]    (MineTest)          {minetest}      </usr/share/icons/hicolor/scalable/apps/minetest-icon.svg>
    	      [exec]    (FlightGear)        {/usr/bin/fgfs} </usr/share/icons/flightgear.ico>
+   	      [exec]    (Stunt Rally)       {} <>
 	[end]
 	[submenu] (Office)
 	    [exec]  (LibreOffice Start) {libreoffice}           </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
