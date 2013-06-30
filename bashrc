@@ -49,8 +49,8 @@ alias ls="ls --color=auto"
 alias reboot="shutdown -r now"
 alias shut="shutdown -h now"
 
-alias pacman="pacman-color"
-alias packer="packer-color"
+#alias pacman="pacman-color"
+#alias packer="packer-color"
 alias makepkg="makepkg --asroot"
 
 # Usage: estrai <nome_file>
