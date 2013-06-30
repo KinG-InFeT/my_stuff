@@ -1,22 +1,19 @@
-# FluxBox Menu Coder By KinG-InFeT ~ http://www.kinginfet.net
-# v0.10.3
+# FluxBox Menu Coder By Luongo Vincenzo - http://www.luongovincenzo.it/
+# v0.11
 
 [begin] (ArchLinux Menu)
 
 [encoding] {UTF-8}
-	[exec] (urxvt)        {urxvt}           
-	[exec] (Firefox)      {firefox}         </usr/share/icons/hicolor/48x48/apps/firefox.png>
-	[exec] (Thunderbird)  {thunderbird}     </usr/share/icons/hicolor/48x48/apps/thunderbird.png>
-	[exec] (Thunar)       {thunar}          </usr/share/icons/hicolor/64x64/apps/Thunar.png>
-	[exec] (Emesene)      {echo "" > /var/log/emesene && emesene2 -vvv 2&>> /var/log/emesene}        </usr/share/pixmaps/emesene2.png>
+	[exec]  (urxvt)         {urxvt}           
+	[exec]  (Firefox)       {firefox}           </usr/share/icons/hicolor/48x48/apps/firefox.png>
+	[exec]  (Thunderbird)   {thunderbird}       </usr/share/icons/hicolor/48x48/apps/thunderbird.png>
+	[exec]  (Thunar)        {thunar}            </usr/share/icons/hicolor/64x64/apps/Thunar.png>
+	[exec]  (Pidgin)        {pidgin}            </usr/share/icons/hicolor/48x48/apps/pidgin.png>
+	[exec]  (Dropbox)       {dropboxd}          </usr/share/pixmaps/dropbox.png>
 [separator]
 	[submenu] (Terminals)
 	    [exec]	(xterm)         {xterm}     </usr/share/pixmaps/xterm-color_48x48.xpm>
 	    [exec]	(urxvt)         {urxvt}
-	[end]
-	[submenu] (Emulation)
-		[exec]  (VirtualBox)    {VirtualBox}    </usr/share/pixmaps/VBox.png>
-        [exec]  (PCSX-DF)       {pcsx}          </usr/share/pixmaps/pcsx-icon.png>
 	[end]
 	[submenu] (Network)
 		[exec]	(irssi)         {urxvt -e irssi}
@@ -27,23 +24,24 @@
 			[exec]	(ZenMap) {zenmap} <usr/share/pixmaps/nmap-logo-64.png>
 		[end]
 		[submenu] (Client Tottent)
-			[exec]	(Deluge) {deluge}	</usr/share/pixmaps/deluge.png>
+			[exec]	(Deluge) {rm -fr /root/.config/deluge/ipc/deluge-gtk.lock && rm -fr /root/.config/deluge/ipc/deluge-gtk && deluge}	</usr/share/pixmaps/deluge.png>
 		[end]
 		[submenu] (FTP)
 		      [exec]	(FileZilla) {filezilla} </usr/share/pixmaps/filezilla.png>
 		[end]
 		[submenu] (IM)
 			[exec]	(Emesene GIT [DEBUG])     {echo "" > /var/log/emesene && emesene2 -vvv 2&>> /var/log/emesene}  </usr/share/pixmaps/emesene2.png>
-			[exec]	(CenterIM)          {urxvt -e centerim}
-			[exec]	(aMSN)              {amsn}  </usr/share/pixmaps/amsn.png>
 			[exec]	(Skype)             {skype} </usr/share/pixmaps/skype.png>
 			[exec]  (Pidgin)            {pidgin} </usr/share/icons/hicolor/48x48/apps/pidgin.png>
 		[end]
 		[submenu] (Browser)
 	    	  [exec]	(Firefox)   {firefox}   </usr/share/icons/hicolor/48x48/apps/firefox.png>
-	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root}  </usr/share/icons/hicolor/48x48/apps/chromium.png>
-	    	  [exec]    (Midori)    {midori} </usr/share/icons/hicolor/48x48/apps/midori.png>
+	    	  [exec]	(Chromium)  {chromium --user-data-dir=/root/.chromium_as_root --ignore-certificate-errors --allow-running-insecure-content}  </usr/share/icons/hicolor/48x48/apps/chromium.png>
 		[end]
+	[end]
+	[submenu] (Emulation)
+		[exec]  (VirtualBox)    {VirtualBox}    </usr/share/pixmaps/VBox.png>
+        [exec]  (PCSX-DF)       {pcsx}          </usr/share/pixmaps/pcsx-icon.png>
 	[end]
 	[submenu] (Text Editors)
 	      [exec]   (nano)   {urxvt -e nano} 
@@ -51,12 +49,10 @@
 	[end]
     [separator]
     [submenu] (IDE Programming)
-		[exec] (Glade GTK+)     {glade}            </usr/share/icons/hicolor/32x32/apps/glade.png>
-		[exec] (NetBeans)       {netbeans}         </usr/share/pixmaps/netbeans.png>
-    	[exec] (Lazarus)        {lazarus}          <>
-		[exec] (Aptana)         {aptana}           </usr/share/pixmaps/aptana.xpm>
 		[exec] (BlueGriffon)    {bluegriffon}      </usr/share/pixmaps/bluegriffon-icon.png>
-        [exec] (gedit)          {gedit}            </usr/share/icons/gentoo/32x32/gedit.png>
+        [exec] (Gedit)          {gedit}            </usr/share/gedit/logo/gedit-logo.png>
+        [exec] (Geany)          {geany}            </usr/share/icons/hicolor/16x16/apps/geany.png>
+        [exec] (Notepadqq)      {notepadqq}        </usr/share/pixmaps/notepadqq_32x32.xpm>
 	[end]
     [submenu] (Android-Dev)
         [exec] (Eclipse)                {eclipse}   </usr/share/icons/hicolor/48x48/apps/eclipse.png>
@@ -92,6 +88,9 @@
    	      [exec]    (MineTest)          {minetest}      </usr/share/icons/hicolor/scalable/apps/minetest-icon.svg>
    	      [exec]    (FlightGear)        {/usr/bin/fgfs} </usr/share/icons/flightgear.ico>
    	      [exec]    (Stunt Rally)       {} <>
+   	      [exec]    (RoR)               {/opt/rigsofrods/bin/RoR} </usr/share/pixmaps/RoR.png>
+   	      [exec]    (RoR-Config)        {/opt/rigsofrods/bin/RoRConfig} </usr/share/pixmaps/RoR.png>
+   	      [exec]    (Surgeon Simulator) {/usr/bin/surgeonsimulator2013} </usr/share/icons/hicolor/64x64/apps/surgeonsimulator2013.png>
 	[end]
 	[submenu] (Office)
 	    [exec]  (LibreOffice Start) {libreoffice}           </usr/share/icons/hicolor/32x32/apps/libreoffice-startcenter.png>
@@ -108,9 +107,10 @@
 	[end]
 	[submenu] (Others)
 	    [exec]	(CMatrix)           {urxvt -e cmatrix -BC green}
-	    [exec]	(TeamViewer)        {teamviewer7}                 </opt/teamviewer/teamviewer/7/desktop/teamviewer.png>
+	    [exec]	(TeamViewer)        {teamviewer}                    </opt/teamviewer/teamviewer/7/desktop/teamviewer.png>
         [exec]  (Metasploit GUI)    {/opt/metasploit/msfgui}
         [exec]  (Metasploit CLI)    {/opt/metasploit/msfconsole}
+        [exec]  (Furius ISO MOunt)  {furiusisomount}                </usr/share/furiusisomount/pix/furiusisomount.png>
 	[end]
 	[submenu] (Edit System File)
     	[exec]   (Edit FluxBox Menu)        {gedit ~/.fluxbox/menu}
