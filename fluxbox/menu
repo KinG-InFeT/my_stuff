@@ -1,5 +1,5 @@
 # FluxBox Menu Coder By Luongo Vincenzo - http://www.luongovincenzo.it/
-# v0.11
+# v0.11.2
 
 [begin] (ArchLinux Menu)
 
@@ -9,7 +9,6 @@
 	[exec]  (Thunderbird)   {thunderbird}       </usr/share/icons/hicolor/48x48/apps/thunderbird.png>
 	[exec]  (Thunar)        {thunar}            </usr/share/icons/hicolor/64x64/apps/Thunar.png>
 	[exec]  (Pidgin)        {pidgin}            </usr/share/icons/hicolor/48x48/apps/pidgin.png>
-	[exec]  (Dropbox)       {dropboxd}          </usr/share/pixmaps/dropbox.png>
 [separator]
 	[submenu] (Terminals)
 	    [exec]	(xterm)         {xterm}     </usr/share/pixmaps/xterm-color_48x48.xpm>
@@ -18,6 +17,7 @@
 	[submenu] (Network)
 		[exec]	(irssi)         {urxvt -e irssi}
 		[exec]  (jDownloader)   {jdownloader}   </usr/share/icons/hicolor/48x48/apps/jdownloader.png>
+		[exec]  (Dropbox)   	{dropboxd}   </usr/share/icons/hicolor/48x48/apps/jdownloader.png>
     	[exec]	(Putty)         {putty}
 		[separator]
 		[submenu] (Port Scanner)
@@ -113,18 +113,19 @@
         [exec]  (Furius ISO MOunt)  {furiusisomount}                </usr/share/furiusisomount/pix/furiusisomount.png>
 	[end]
 	[submenu] (Edit System File)
-    	[exec]   (Edit FluxBox Menu)        {gedit ~/.fluxbox/menu}
-    	[exec]   (Edit FluxBox Startup)     {gedit ~/.fluxbox/startup}
-    	[exec]	 (Edit FluxBox Keys)        {gedit ~/.fluxbox/keys}
-    	[exec]	 (Edit FluxBox init)        {gedit ~/.fluxbox/init}
-    	[exec]   (Edit rc.conf)             {gedit /etc/rc.conf}
-    	[exec]   (Edit BashRC)              {gedit ~/.bashrc}
-    	[exec]   (Edit XinitRC)             {gedit ~/.xinitrc}
-    	[exec]   (Edit xorg.conf)           {gedit /etc/X11/xorg.conf}
-    	[exec]   (Edit ConkyRC)             {gedit ~/.conkyrc}
-    	[exec]   (Edit VimRC)               {gedit ~/.vimrc}
-    	[exec]   (Edit Xdefault)            {gedit ~/.Xdefaults}
-    	[exec]   (Edit PacMan Conf)         {gedit /etc/pacman.conf}
+    	[exec]   (Edit FluxBox Menu)        {notepadqq ~/.fluxbox/menu}
+    	[exec]   (Edit FluxBox Startup)     {notepadqq ~/.fluxbox/startup}
+    	[exec]	 (Edit FluxBox Keys)        {notepadqq ~/.fluxbox/keys}
+    	[exec]	 (Edit FluxBox init)        {notepadqq ~/.fluxbox/init}
+    	[exec]   (Edit rc.conf)             {notepadqq /etc/rc.conf}
+    	[exec]   (Edit BashRC)              {notepadqq ~/.bashrc}
+    	[exec]   (Edit XinitRC)             {notepadqq ~/.xinitrc}
+    	[exec]   (Edit xorg.conf)           {notepadqq /etc/X11/xorg.conf}
+    	[exec]   (Edit ConkyRC)             {notepadqq ~/.conkyrc}
+    	[exec]   (Edit VimRC)               {notepadqq ~/.vimrc}
+    	[exec]   (Edit Xdefault)            {notepadqq ~/.Xdefaults}
+    	[exec]   (Edit PacMan Conf)         {notepadqq /etc/pacman.conf}
+    	[exec]   (Edit Adobe MMS Conf)      {notepadqq /etc/adobe/mms.cfg}
 	[end]
 [separator]
     [exec] (Nvidia Settings) {/usr/bin/nvidia-settings} </usr/share/pixmaps/nvidia-settings.png>
