@@ -47,6 +47,8 @@ CPU model: Intel(R) Core(TM) i3 CPU 540
 
 Core 1: ${cpu cpu1}% ${cpubar cpu1}
 Core 2: ${cpu cpu2}% ${cpubar cpu2}
+Core 3: ${cpu cpu3}% ${cpubar cpu3}
+Core 4: ${cpu cpu4}% ${cpubar cpu4}
 
 ${color white}RAM : ${color grey}$mem / $memmax
 $memperc% ${color light grey}${membar 6}
