@@ -1,4 +1,4 @@
-# Conkyrc v4.0.3 By KinG-InFeT ~ http://www.kinginfet.net/
+# Conkyrc v4.0.4 By KinG-InFeT ~ http://www.kinginfet.net/
 # file '/etc/conky/conky.conf' or '~/.conkyrc'
 
 background no
@@ -41,9 +41,9 @@ Local IP: ${alignr}${addr eth0}
 
 ${color white}Monitor System $stippled_hr${color}
 
-Frequenza CPU: $freq_g Ghz
+Frequenza CPU: 3.07 GHz
 
-CPU model: Pentium(R) Dual Core @ E5400
+CPU model: Intel(R) Core(TM) i3 CPU 540
 
 Core 1: ${cpu cpu1}% ${cpubar cpu1}
 Core 2: ${cpu cpu2}% ${cpubar cpu2}
