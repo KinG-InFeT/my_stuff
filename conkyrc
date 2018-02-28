@@ -1,9 +1,10 @@
-# Conkyrc v5 By Luongo Vincenzo - https://luongovincenzo.it
+# Conkyrc By Luongo Vincenzo - https://luongovincenzo.it
 # file '/etc/conky/conky.conf' or '~/.conkyrc'
 
 background no
 xftfont NeogreyRegular:size=8
 xftalpha 0.8
+xinerama_head 1 #https://github.com/brndnmtthws/conky/issues/249#issuecomment-218692090
 own_window yes
 own_window_type normal
 own_window_transparent no
