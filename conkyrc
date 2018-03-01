@@ -2,9 +2,10 @@
 # file '/etc/conky/conky.conf' or '~/.conkyrc'
 
 background no
-xftfont NeogreyRegular:size=8
+xftfont Terminus:size=8
 xftalpha 0.8
-xinerama_head 1 #https://github.com/brndnmtthws/conky/issues/249#issuecomment-218692090
+update_interval 3.0
+total_run_times 0
 own_window yes
 own_window_type normal
 own_window_transparent no
@@ -12,36 +13,31 @@ own_window_argb_visual yes
 own_window_colour 000000
 own_window_argb_value 100
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-update_interval 3.0
-total_run_times 0
 double_buffer yes
 minimum_size 220 5
 maximum_width 300
-draw_shades yes
-draw_outline yes
+draw_shades no
+draw_outline no
 draw_borders no
-draw_graph_borders no
+draw_graph_borders yes
 default_color white
 default_shade_color black
 alignment top_right
-gap_x 12
-gap_y 35
+gap_x 300
+gap_y 100
 no_buffers yes
 cpu_avg_samples 2
 override_utf8_locale no
-uppercase no
+uppercase yes
 
 
 TEXT
 ${color white}${alignc} Fedora Workstation$color
 ${color white}${alignc}$sysname $kernel ($machine)
 
-Time: $alignr${time %H:%M}
-Date: $alignr${time %a,}${time %B %e}
 Hostname: $alignr$nodename
 Kernel: $alignr$kernel
-Uptime: $alignr$uptime_short
-Local IP: ${alignr}${addr enp3s0}
+Local IP: ${alignr}${addr virbr0}
 
 ${color white}Monitor System $stippled_hr${color}
 
