@@ -1,8 +1,7 @@
 # Conkyrc By Luongo Vincenzo - https://luongovincenzo.it
-# file '/etc/conky/conky.conf' or '~/.conkyrc'
+# file '~/.conkyrc' overwrite default configuration file
 
 background no
-xftfont Terminus:size=8
 xftalpha 0.8
 update_interval 3.0
 total_run_times 0
@@ -24,7 +23,7 @@ default_color white
 default_shade_color black
 alignment top_right
 gap_x 300
-gap_y 100
+gap_y 0
 no_buffers yes
 cpu_avg_samples 2
 override_utf8_locale no
@@ -32,7 +31,7 @@ uppercase yes
 
 
 TEXT
-${color white}${alignc} Fedora Workstation$color
+${color white}${alignc} ${execi 10 . /etc/os-release && echo ${PRETTY_NAME//[0-9,. ]/ }}$color
 ${color white}${alignc}$sysname $kernel ($machine)
 
 Hostname: $alignr$nodename
@@ -41,9 +40,8 @@ Local IP: ${alignr}${addr virbr0}
 
 ${color white}Monitor System $stippled_hr${color}
 
-Frequenza CPU: 3.20 GHz
-
-CPU model: Intel(R) Core(TM) i5-3470
+${color #ffffff}CPU :${alignr}${execi 10 cat /proc/cpuinfo | grep 'model name' | uniq | sed -e 's/model name[[:blank:]]://g' } 
+${color #ffffff}TEMP:${alignr}${acpitemp}C$color
 
 Core 1: ${cpu cpu1}% ${cpubar cpu1}
 Core 2: ${cpu cpu2}% ${cpubar cpu2}
@@ -57,29 +55,37 @@ $swapperc% ${color light grey}${swapbar 6}
 
 ${color white}Hard Drive $stippled_hr${color}
 
+${color white}ROOT: $alignr Free: ${fs_free /} / ${fs_size /}$color
+${color light grey}${fs_bar 3 /}
 ${color white}HOME: $alignr Free: ${fs_free /home/vluongo} / ${fs_size /home/vluongo}$color
 ${color light grey}${fs_bar 3 /home/vluongo}
 $color
 ${color white}Process Monitor System $stippled_hr${color}
 
 ${color white}Processes${alignr} CPU   Mem${color}${color light grey}
-${top name 1}${alignr}${top cpu 1}${alignr }${top mem 1}
-${top name 2}${alignr}${top cpu 2}${alignr }${top mem 2}
-${top name 3}${alignr}${top cpu 3}${alignr }${top mem 3}
-${top name 4}${alignr}${top cpu 4}${alignr }${top mem 4}
-${top name 5}${alignr}${top cpu 5}${alignr }${top mem 5}
+ ${color #ddaa00}${top name 1} $alignr ${top pid 1} ${top cpu 1} ${top mem 1}$color
+ ${top name 2} $alignr ${top pid 2} ${top cpu 2} ${top mem 2}
+ ${top name 3} $alignr ${top pid 3} ${top cpu 3} ${top mem 3}
 
-${color white}Network: ${color #BBBBBB} eth0_$stippled_hr
+Mem usage$color$stippled_hr
+ ${color #ddaa00}${top_mem name 1} $alignr ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}$color
+ ${top_mem name 2} $alignr ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+ ${top_mem name 3} $alignr ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
 
-${color #888888}DOWN: ${color #CCCCCC}${downspeed eth0} k/s	    ${color #888888}UP: ${color #CCCCCC}${upspeed eth0} k/s
-${color #888888}${downspeedgraph eth0 25,100 ff0000 0000ff}	  ${color #888888}${upspeedgraph eth0 25,100 0000ff ff0000}
-${color #888888}TOTAL: ${color #CCCCCC}${totaldown eth0}	        ${color #888888}TOTAL: ${color #CCCCCC}${totalup eth0}
+Network Download:$stippled_hr
+${color #ddaa00} Speed: $alignr ${downspeed virbr0} k/s$color
+ Tot: $alignr ${totaldown virbr0}
+
+${downspeedgraph virbr0 20} ${alignr}${upspeedgraph virbr0 20}
+
+Network Upload:$stippled_hr
+${color #ddaa00} Speed: $alignr ${upspeed eth0} k/s$color
+ Tot: $alignr ${totalup virbr0}
+
+${upspeedgraph virbr0 20} ${alignr}${upspeedgraph virbr0 20}
 
 ${color white}Server Connection ${alignr} ${color white}Remote Service/Port
 
 ${tcp_portmon 32768 61000 rhost 0} ${alignr} ${tcp_portmon 32768 61000 rservice 0}
 ${tcp_portmon 32768 61000 rhost 1} ${alignr} ${tcp_portmon 32768 61000 rservice 1}
 ${tcp_portmon 32768 61000 rhost 2} ${alignr} ${tcp_portmon 32768 61000 rservice 2}
-${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
-${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
-${tcp_portmon 32768 61000 rhost 5} ${alignr} ${tcp_portmon 32768 61000 rservice 5}
