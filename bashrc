@@ -9,23 +9,30 @@ fi
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-export PATH=$PATH:/opt/node-v8.9.4-linux-x64/bin
+#export PATH=$PATH:/opt/node-v8.9.4-linux-x64/bin
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+
+#export PATH="$HOME/.rbenv/bin:$PATH"
+
+#eval "$(rbenv init -)"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+#export PATH="$PATH:$HOME/.rvm/bin"
 
 # NUOVE VARIABILI DI AMBIENTE
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 export ORG_GRADLE_PROJECT_cdvMinSdkVersion=20
 
-#nvm use 8 --silent
+JAVA_HOME=/usr/local/java/jdk1.8.0_191
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+export JAVA_HOME
+export PATH
+
+nvm use 10 --silent
 ix() {
     local opts
     local OPTIND
