@@ -1,48 +1,51 @@
 -- Conkyrc By Luongo Vincenzo - https://luongovincenzo.it
--- file '~/.conkyrc' overwrite default configuration file
+-- Install as ~/.conkyrc. Conky 1.10+ (Lua) syntax.
+-- Names tied to this machine: Ethernet enxd0c0bf31fbb0, WiFi wlp0s20f3, VPN surfshark_wg,
+-- disk nvme0n1, battery BAT0, sensors coretemp / nvme / dell_smm.
 
-xftalpha 0.8
-update_interval 3.0
-total_run_times 0
-own_window yes
-own_window_type normal
-own_window_transparent yes
-own_window_argb_visual yes
-own_window_colour 000000
-own_window_argb_value 100
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-double_buffer yes
-minimum_size 220 5
-maximum_width 450
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders yes
-default_color white
-default_shade_color black
-alignment top_right
-gap_x 10
-gap_y 50
-no_buffers yes
-cpu_avg_samples 8
-override_utf8_locale no
-uppercase yes
+conky.config = {
+    xftalpha = 0.8,
+    update_interval = 3.0,
+    total_run_times = 0,
+    own_window = true,
+    own_window_type = 'normal',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_colour = '000000',
+    own_window_argb_value = 100,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    double_buffer = true,
+    minimum_width = 220,
+    minimum_height = 5,
+    maximum_width = 450,
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = true,
+    default_color = 'white',
+    default_shade_color = 'black',
+    alignment = 'top_right',
+    gap_x = 10,
+    gap_y = 50,
+    no_buffers = true,
+    cpu_avg_samples = 8,
+    override_utf8_locale = false,
+    uppercase = true,
+};
 
-
-TEXT
-${color white}${alignc} ${execi 10 . /etc/os-release && echo ${PRETTY_NAME//[0-9,. ]/ }}$color
+conky.text = [[
+${color white}${alignc}${execi 3600 lsb_release -si}$color
 ${color white}${alignc}$sysname $kernel ($machine)
 
-OS: $alignr${exec lsb_release -ar 2>/dev/null | grep -i description | cut -s -f2}
+OS: $alignr${execi 3600 lsb_release -ds}
 Hostname: $alignr$nodename
 Kernel: $alignr$kernel
-Local IP: ${alignr}${addr enx0c3796426f1a}
-Remote IP: ${alignr}${exec curl -s http://ipinfo.io/ip}
+Local IP: ${alignr}${addr enxd0c0bf31fbb0}
+Remote IP: ${alignr}${execi 300 curl -s https://ipinfo.io/ip}
 
 ${color white}Monitor System $stippled_hr${color}
 
-${color #ffffff}CPU :${alignr}${execi 10 cat /proc/cpuinfo | grep 'model name' | uniq | sed -e 's/model name[[:blank:]]://g' } 
-${color #ffffff}TEMP:${alignr}${acpitemp}C$color
+${color #ffffff}CPU :${alignr}${execi 3600 grep -m1 'model name' /proc/cpuinfo | cut -d: -f2}$color
 
 Core 1: ${cpu cpu1}% ${cpubar cpu1}
 Core 2: ${cpu cpu2}% ${cpubar cpu2}
@@ -91,14 +94,18 @@ ${color white}System Info $stippled_hr${color}
 
 Uptime: $alignr $uptime
 Load Average: $alignr $loadavg
+Battery: $alignr ${battery BAT0}
+${battery_bar 6 BAT0}
 
 ${color white}Temperature $stippled_hr${color}
 
-CPU Package: $alignr ${hwmon 4 temp 1}°C
-CPU Core 0: $alignr ${hwmon 4 temp 2}°C
-CPU Core 1: $alignr ${hwmon 4 temp 3}°C
-CPU Core 2: $alignr ${hwmon 4 temp 4}°C
-CPU Core 3: $alignr ${hwmon 4 temp 5}°C
+CPU Package: $alignr ${hwmon coretemp temp 1}°C
+CPU Core 0: $alignr ${hwmon coretemp temp 2}°C
+CPU Core 1: $alignr ${hwmon coretemp temp 3}°C
+CPU Core 2: $alignr ${hwmon coretemp temp 4}°C
+CPU Core 3: $alignr ${hwmon coretemp temp 5}°C
+NVMe: $alignr ${hwmon nvme temp 1}°C
+Fan: $alignr ${hwmon dell_smm fan 1} RPM
 
 ${color white}CPU Frequency $stippled_hr${color}
 
@@ -112,14 +119,12 @@ NVMe Write: $alignr ${diskio_write nvme0n1}/s
 
 ${color white}Network $stippled_hr${color}
 
-ETH Down: ${downspeed enx0c3796426f1a}/s $alignr Up: ${upspeed enx0c3796426f1a}/s
-VPN Down: ${downspeed surfshark_wg}/s $alignr Up: ${upspeed surfshark_wg}/s
-
+${if_up enxd0c0bf31fbb0}ETH Down: ${downspeed enxd0c0bf31fbb0}/s $alignr Up: ${upspeed enxd0c0bf31fbb0}/s
+${endif}${if_up surfshark_wg}VPN Down: ${downspeed surfshark_wg}/s $alignr Up: ${upspeed surfshark_wg}/s
+${endif}${if_up wlp0s20f3}
 ${color white}WiFi $stippled_hr${color}
 
 SSID: $alignr ${wireless_essid wlp0s20f3}
 Signal: ${wireless_link_qual_perc wlp0s20f3}% $alignr ${wireless_bitrate wlp0s20f3}
 IP: $alignr ${addr wlp0s20f3}
-${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
-${tcp_portmon 32768 61000 rhost 4} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
-
+${endif}]];

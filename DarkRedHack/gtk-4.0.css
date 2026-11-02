@@ -1,0 +1,63 @@
+/* DarkRedHack look for GTK4 / libadwaita apps (libadwaita 1.5, GNOME 46).
+ * install.sh writes this file + gtk-extra.css to ~/.config/gtk-4.0/gtk.css,
+ * which GTK4 loads on top of any theme. */
+
+/* Accent and status colors */
+@define-color accent_color #ff0027;
+@define-color accent_bg_color #d70022;
+@define-color accent_fg_color #ffffff;
+@define-color destructive_color #ff0027;
+@define-color destructive_bg_color #d70022;
+@define-color destructive_fg_color #ffffff;
+@define-color error_color #ff0027;
+@define-color error_bg_color #d70022;
+@define-color error_fg_color #ffffff;
+@define-color warning_color #ffbb00;
+@define-color warning_bg_color #ffbb00;
+@define-color warning_fg_color #0a0a0b;
+@define-color success_color #0fd29b;
+@define-color success_bg_color #0fd29b;
+@define-color success_fg_color #0a0a0b;
+
+/* Surfaces */
+@define-color window_bg_color #0a0a0b;
+@define-color window_fg_color #e6e8ec;
+@define-color view_bg_color #111113;
+@define-color view_fg_color #e6e8ec;
+@define-color headerbar_bg_color #0a0a0b;
+@define-color headerbar_fg_color #e6e8ec;
+@define-color headerbar_border_color #222226;
+@define-color headerbar_backdrop_color #0a0a0b;
+@define-color headerbar_shade_color #222226;
+@define-color headerbar_darker_shade_color #2c2c31;
+@define-color sidebar_bg_color #111113;
+@define-color sidebar_fg_color #e6e8ec;
+@define-color sidebar_backdrop_color #111113;
+@define-color sidebar_shade_color #222226;
+@define-color sidebar_border_color #222226;
+@define-color secondary_sidebar_bg_color #0e0e10;
+@define-color secondary_sidebar_fg_color #e6e8ec;
+@define-color secondary_sidebar_backdrop_color #0e0e10;
+@define-color secondary_sidebar_shade_color #222226;
+@define-color secondary_sidebar_border_color #222226;
+@define-color card_bg_color #111113;
+@define-color card_fg_color #e6e8ec;
+@define-color card_shade_color #222226;
+@define-color dialog_bg_color #111113;
+@define-color dialog_fg_color #e6e8ec;
+@define-color popover_bg_color #17171a;
+@define-color popover_fg_color #e6e8ec;
+@define-color popover_shade_color rgba(0, 0, 0, 0.5);
+@define-color thumbnail_bg_color #17171a;
+@define-color thumbnail_fg_color #e6e8ec;
+@define-color shade_color rgba(0, 0, 0, 0.5);
+@define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
+
+/* Square corners everywhere, sharp windows; circles only where the shape means something. */
+* { border-radius: 2px; }
+window, headerbar, .titlebar { border-radius: 0; }
+checkbutton > radio, avatar, scale > trough > slider { border-radius: 9999px; }
+
+/* Crisp 1px lines instead of soft shadows. */
+.card, list.boxed-list, list.content { box-shadow: 0 0 0 1px #222226; }
+popover > contents { box-shadow: 0 0 0 1px #2c2c31, 0 4px 12px rgba(0, 0, 0, 0.5); }

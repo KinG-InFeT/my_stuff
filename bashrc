@@ -47,12 +47,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
     else
-	color_prompt=
+    color_prompt=
     fi
 fi
 
@@ -131,7 +131,8 @@ export PATH=$PATH:/opt/gradle/gradle-7.6/bin
 
 #export ORG_GRADLE_PROJECT_cdvMinSdkVersion=20
 
-JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+#JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+JAVA_HOME=/usr/lib/jvm/jdk-23.0.2-oracle-x64
 PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
 export JAVA_HOME
 export PATH
@@ -142,4 +143,6 @@ function myip() {
     wget -q -O - checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//'
 }
 
-export OPENAI_API_KEY="sk-******"
+alias python=python3
+alias clauded="export MAX_MCP_OUTPUT_TOKENS=50000 && claude --dangerously-skip-permissions"
+alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
