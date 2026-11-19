@@ -1,0 +1,32 @@
+# DarkRedHack colors for Alacritty: install.sh fills in the @drh_* colors from palette.css.
+[colors.primary]
+background = "@drh_bg"
+foreground = "@drh_fg"
+
+[colors.cursor]
+text = "@drh_bg"
+cursor = "@drh_red"
+
+[colors.selection]
+text = "#ffffff"
+background = "@drh_red_fill"
+
+[colors.normal]
+black = "@drh_raised"
+red = "@drh_red"
+green = "@drh_green"
+yellow = "@drh_amber"
+blue = "@drh_blue"
+magenta = "@drh_magenta"
+cyan = "@drh_cyan"
+white = "@drh_white"
+
+[colors.bright]
+black = "@drh_bright_black"
+red = "@drh_bright_red"
+green = "@drh_bright_green"
+yellow = "@drh_bright_yellow"
+blue = "@drh_bright_blue"
+magenta = "@drh_bright_magenta"
+cyan = "@drh_bright_cyan"
+white = "@drh_fg"

@@ -1,0 +1,26 @@
+# DarkRedHack palette for Ptyxis: install.sh fills in the @drh_* colors from palette.css.
+# Without [Light]/[Dark] groups Ptyxis uses these colors in both modes.
+[Palette]
+Name=DarkRedHack
+Background=@drh_bg
+Foreground=@drh_fg
+TitlebarBackground=@drh_bg
+TitlebarForeground=@drh_fg
+CursorBackground=@drh_red
+CursorForeground=@drh_bg
+Color0=@drh_raised
+Color1=@drh_red
+Color2=@drh_green
+Color3=@drh_amber
+Color4=@drh_blue
+Color5=@drh_magenta
+Color6=@drh_cyan
+Color7=@drh_white
+Color8=@drh_bright_black
+Color9=@drh_bright_red
+Color10=@drh_bright_green
+Color11=@drh_bright_yellow
+Color12=@drh_bright_blue
+Color13=@drh_bright_magenta
+Color14=@drh_bright_cyan
+Color15=@drh_fg

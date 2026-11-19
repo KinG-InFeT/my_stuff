@@ -1,0 +1,16 @@
+# DarkRedHack profile for GNOME Terminal: install.sh fills in the @drh_* colors from palette.css and loads it with
+# `dconf load /org/gnome/terminal/legacy/profiles:/:<uuid>/`.
+[/]
+visible-name='DarkRedHack'
+use-theme-colors=false
+use-transparent-background=false
+background-color='@drh_bg'
+foreground-color='@drh_fg'
+bold-color-same-as-fg=true
+cursor-colors-set=true
+cursor-background-color='@drh_red'
+cursor-foreground-color='@drh_bg'
+highlight-colors-set=true
+highlight-background-color='@drh_red_fill'
+highlight-foreground-color='#ffffff'
+palette=['@drh_raised', '@drh_red', '@drh_green', '@drh_amber', '@drh_blue', '@drh_magenta', '@drh_cyan', '@drh_white', '@drh_bright_black', '@drh_bright_red', '@drh_bright_green', '@drh_bright_yellow', '@drh_bright_blue', '@drh_bright_magenta', '@drh_bright_cyan', '@drh_fg']

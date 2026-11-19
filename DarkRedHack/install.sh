@@ -6,6 +6,7 @@
 #   GTK3 apps       -> ~/.config/gtk-3.0/gtk.css + darkredhack-assets/
 #   GTK4/libadwaita -> ~/.config/gtk-4.0/gtk.css
 #   Chakra Petch    -> ~/.local/share/fonts/ChakraPetch  (Google Fonts, OFL)
+#   Terminals       -> a DarkRedHack profile for GNOME Terminal and Ptyxis, a color file for Alacritty and kitty
 #
 # The GTK theme stays "Yaru-dark" and the color scheme is forced to dark, so Snap/Flatpak and
 # Electron apps (Slack, Firefox, ...), which cannot read custom themes, stay dark too.
@@ -23,11 +24,28 @@ STATE="$HOME/.config/darkredhack-theme"
 FONT_DIR="$HOME/.local/share/fonts/ChakraPetch"
 FONT_URL=https://github.com/google/fonts/raw/main/ofl/chakrapetch
 USER_THEME=user-theme@gnome-shell-extensions.gcampax.github.com
+GT=/org/gnome/terminal/legacy/profiles:
+GT_UUID=a302d580-50d7-4ed4-bd6f-91974153d618
+GT_BUILTIN=b1dcc9dd-5262-4d8d-a863-c897e6d979b9
+PTYXIS_UUID=b49cc603d8794dba877309d3de778fbf
 PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions python3-pil curl fontconfig libglib2.0-bin dconf-cli xdotool)
 
 recolor() { python3 -I "$SRC/recolor.py" "$@"; }
 # The GNOME Shell stylesheet has no variables: paste the palette.css values in place of the @drh_* names.
 palette() { sed -E "$(sed -nE 's/^@define-color (drh_[a-z_]+) (.+);$/s|@\1\\b|\2|g;/p' "$SRC/palette.css")"; }
+# Add an item to a GSettings string list ("['a', 'b']"; empty or "@as []" means no items).
+list_add() { case $1 in *"'$2'"*) echo "$1" ;; "" | "@as []") echo "['$2']" ;; *) echo "${1%]}, '$2']" ;; esac; }
+# Remember the default terminal profile found the first time, so uninstall.sh can put it back.
+remember() { [[ -f $STATE/$1 ]] || echo "$2" > "$STATE/$1"; }
+# GTK4 stylesheet for a given libadwaita version: 1.6+ styles its widgets with CSS variables (--window-bg-color)
+# instead of named colors, so every @define-color line of gtk-4.0.css is also written as its variable.
+gtk4_css() {
+  cat "$SRC/palette.css" "$SRC/gtk-4.0.css" "$SRC/gtk-extra.css"
+  if dpkg --compare-versions "$1" ge 1.6; then
+    palette < "$SRC/gtk-4.0.css" | awk '$1 == "@define-color" {
+      name = $2; gsub("_", "-", name); $1 = $2 = ""; sub(/^ +/, ""); print ":root { --" name ": " $0 " }" }'
+  fi
+}
 
 echo "==> Installing packages"
 apt_install() { sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "${PACKAGES[@]}" > /dev/null; }
@@ -87,14 +105,71 @@ find "$GTK3/darkredhack-assets" -name '*.png' ! -name '*.symbolic.png' -exec pyt
   gresource extract "$GRES" "$RES/gtk.css" | recolor | sed 's|url("assets/|url("darkredhack-assets/|g'
   cat "$SRC/palette.css" "$SRC/gtk-extra.css"
 } > "$GTK3/gtk.css"
-{
-  cat "$SRC/palette.css" "$SRC/gtk-4.0.css" "$SRC/gtk-extra.css"
-  # libadwaita 1.6+ styles its widgets with CSS variables (--window-bg-color) instead of named colors.
-  if dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libadwaita-1-0)" ge 1.6; then
-    palette < "$SRC/gtk-4.0.css" | awk '$1 == "@define-color" {
-      name = $2; gsub("_", "-", name); $1 = $2 = ""; sub(/^ +/, ""); print ":root { --" name ": " $0 " }" }'
+gtk4_css "$(dpkg-query -W -f='${Version}' libadwaita-1-0)" > "$GTK4/gtk.css"
+
+echo "==> Building the terminal profiles"
+if command -v gnome-terminal > /dev/null; then
+  echo "    GNOME Terminal"
+  palette < "$SRC/terminals/gnome-terminal.dconf" | dconf load "$GT/:$GT_UUID/"
+  list=$(dconf read "$GT/list")
+  dconf write "$GT/list" "$(list_add "${list:-['$GT_BUILTIN']}" "$GT_UUID")"
+  default=$(dconf read "$GT/default")
+  remember gnome-terminal-default "${default:-'$GT_BUILTIN'}"
+  dconf write "$GT/default" "'$GT_UUID'"
+fi
+# Ptyxis: native package (Ubuntu 26.04+) or the Flathub app, which keeps its own settings and palettes.
+ptyxis=()
+if command -v ptyxis > /dev/null; then
+  ptyxis=(gsettings)
+  ptyxis_palettes="$HOME/.local/share/org.gnome.Ptyxis/palettes"
+elif flatpak info app.devsuite.Ptyxis > /dev/null 2>&1; then
+  ptyxis=(flatpak run --command=gsettings app.devsuite.Ptyxis)
+  ptyxis_palettes="$HOME/.var/app/app.devsuite.Ptyxis/data/app.devsuite.Ptyxis/palettes"
+  # The Flatpak reads its own GTK4 stylesheet (Flathub runtimes ship libadwaita 1.6+). A stylesheet of yours is kept.
+  css="$HOME/.var/app/app.devsuite.Ptyxis/config/gtk-4.0/gtk.css"
+  if [[ ! -e $css ]] || grep -qs 'DarkRedHack' "$css"; then
+    mkdir -p "${css%/*}"
+    gtk4_css 1.6 > "$css"
   fi
-} > "$GTK4/gtk.css"
+fi
+if (( ${#ptyxis[@]} )); then
+  echo "    Ptyxis"
+  mkdir -p "$ptyxis_palettes"
+  palette < "$SRC/terminals/ptyxis.palette" > "$ptyxis_palettes/DarkRedHack.palette"
+  profile="org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/$PTYXIS_UUID/"
+  "${ptyxis[@]}" set "$profile" label "'DarkRedHack'"
+  "${ptyxis[@]}" set "$profile" palette "'DarkRedHack'"
+  "${ptyxis[@]}" set org.gnome.Ptyxis profile-uuids \
+    "$(list_add "$("${ptyxis[@]}" get org.gnome.Ptyxis profile-uuids)" "$PTYXIS_UUID")"
+  remember ptyxis-default "$("${ptyxis[@]}" get org.gnome.Ptyxis default-profile-uuid)"
+  "${ptyxis[@]}" set org.gnome.Ptyxis default-profile-uuid "'$PTYXIS_UUID'"
+fi
+if command -v alacritty > /dev/null; then
+  echo "    Alacritty"
+  conf="$HOME/.config/alacritty/alacritty.toml"
+  import='import = ["~/.config/alacritty/darkredhack.toml"]'
+  mkdir -p "${conf%/*}"
+  palette < "$SRC/terminals/alacritty.toml" > "${conf%/*}/darkredhack.toml"
+  if grep -qs 'darkredhack\.toml' "$conf"; then
+    :
+  elif grep -qsE '^\s*import\s*=' "$conf"; then
+    echo "    Alacritty already imports other files: add ~/.config/alacritty/darkredhack.toml to that list in $conf"
+  # Alacritty 0.14 moved "import" from the top of the file into the [general] table.
+  elif dpkg --compare-versions "$(alacritty --version | cut -d' ' -f2)" lt 0.14; then
+    { echo "$import"; cat "$conf" 2> /dev/null || true; } > "$conf.new" && mv "$conf.new" "$conf"
+  elif grep -qs '^\[general\]' "$conf"; then
+    sed -i "/^\[general\]/a $import" "$conf"
+  else
+    printf '[general]\n%s\n' "$import" >> "$conf"
+  fi
+fi
+if command -v kitty > /dev/null; then
+  echo "    kitty"
+  mkdir -p "$HOME/.config/kitty"
+  palette < "$SRC/terminals/kitty.conf" > "$HOME/.config/kitty/darkredhack.conf"
+  grep -qsx 'include darkredhack.conf' "$HOME/.config/kitty/kitty.conf" \
+    || echo 'include darkredhack.conf' >> "$HOME/.config/kitty/kitty.conf"
+fi
 
 echo "==> Activating"
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
@@ -103,12 +178,7 @@ gsettings set org.gnome.desktop.interface gtk-theme Yaru-dark
 dconf reset /org/gnome/shell/extensions/user-theme/name
 sleep 1
 dconf write /org/gnome/shell/extensions/user-theme/name "'DarkRedHack'"
-enabled=$(gsettings get org.gnome.shell enabled-extensions)
-case $enabled in
-  *"$USER_THEME"*) ;;
-  "@as []") gsettings set org.gnome.shell enabled-extensions "['$USER_THEME']" ;;
-  *) gsettings set org.gnome.shell enabled-extensions "${enabled%]}, '$USER_THEME']" ;;
-esac
+gsettings set org.gnome.shell enabled-extensions "$(list_add "$(gsettings get org.gnome.shell enabled-extensions)" "$USER_THEME")"
 
 # A running GNOME Shell only discovers newly installed extensions and fonts when it restarts.
 if [[ $NEW_FONT == no ]] && gnome-extensions info "$USER_THEME" > /dev/null 2>&1; then

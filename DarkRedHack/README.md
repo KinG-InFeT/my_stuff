@@ -15,6 +15,8 @@ It covers the whole desktop: the top bar and menus (GNOME Shell), GTK3 apps and 
   red markers on selected menu items and sidebar rows, a red text cursor.
 - **Chakra Petch** ([Google Fonts](https://fonts.google.com/specimen/Chakra+Petch), OFL): the whole GNOME Shell, window titles and
   big page titles. Normal app text keeps the system font for readability.
+- **Terminals**: a DarkRedHack color profile for GNOME Terminal, Ptyxis, Alacritty and kitty (black background, red cursor and
+  selection, an ANSI palette built on the same colors). See [Terminals](#terminals).
 
 ## Requirements
 
@@ -45,7 +47,9 @@ The script is unattended and can be run again at any time: it rebuilds the theme
    extra stylesheets, with the colors taken from `palette.css`.
 5. **Activate**: forces the dark color scheme, keeps `Yaru-dark` as GTK theme, selects DarkRedHack as Shell theme and enables the
    User Themes extension.
-6. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
+6. **Terminals**: for each terminal found (GNOME Terminal, Ptyxis, Alacritty, kitty) it writes the DarkRedHack colors and makes
+   them the default profile. See [Terminals](#terminals).
+7. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
    on X11 the script triggers the restart by itself (same as `Alt+F2` → `r`: open windows are kept); on Wayland it asks you to log
    out and back in.
 
@@ -59,6 +63,10 @@ Already open apps pick up the new look when you reopen them.
 | GTK3 apps (e.g. Terminal) | `~/.config/gtk-3.0/gtk.css` + `~/.config/gtk-3.0/darkredhack-assets/` |
 | GTK4 / libadwaita apps (Files, Settings, Text Editor, …) | `~/.config/gtk-4.0/gtk.css` |
 | Chakra Petch font | `~/.local/share/fonts/ChakraPetch/` |
+| GNOME Terminal profile | dconf `/org/gnome/terminal/legacy/profiles:/` (profile *DarkRedHack*) |
+| Ptyxis profile and palette | native: dconf `/org/gnome/Ptyxis/` + `~/.local/share/org.gnome.Ptyxis/palettes/DarkRedHack.palette`; Flatpak: the same inside `~/.var/app/app.devsuite.Ptyxis/`, plus its `config/gtk-4.0/gtk.css` |
+| Alacritty | `~/.config/alacritty/darkredhack.toml` + one `import` line in `alacritty.toml` |
+| kitty | `~/.config/kitty/darkredhack.conf` + one `include darkredhack.conf` line in `kitty.conf` |
 | Backup of the original look | `~/.config/darkredhack-theme/` |
 
 ## Why it is always dark
@@ -72,12 +80,29 @@ Already open apps pick up the new look when you reopen them.
 Do not switch *Settings → Appearance* to *Light*: Ubuntu would change the GTK theme and sandboxed apps would turn light.
 If it happens, run `./install.sh` again.
 
+## Terminals
+
+`install.sh` themes every terminal it finds and skips the others: install a terminal later and run `./install.sh` again.
+It never changes which terminal app is the default one; inside each terminal it makes DarkRedHack the default profile and
+`uninstall.sh` puts the previous default profile back.
+
+| Terminal | What you get |
+|---|---|
+| GNOME Terminal | A new *DarkRedHack* profile, set as default. Your other profiles are kept. A window opened from an existing terminal keeps that terminal's profile; new windows from the launcher use DarkRedHack. |
+| Ptyxis (default terminal from Ubuntu 26.04) | A *DarkRedHack* palette and profile, set as default. Works with the native package (26.04+) and with the Flathub app on 24.04 (`flatpak install flathub app.devsuite.Ptyxis`), which also gets the DarkRedHack window style, since Flatpak apps do not read `~/.config/gtk-4.0/gtk.css`. |
+| Alacritty | `darkredhack.toml`, imported from `alacritty.toml` (top-level `import` before 0.14, `[general] import` from 0.14). Colors set in `alacritty.toml` itself win over imported files. If `alacritty.toml` already has an `import` list, the script asks you to add the file to it. |
+| kitty | `darkredhack.conf`, included at the end of `kitty.conf`, so it wins over earlier color settings. |
+| GNOME Console | Window style only. Console has no setting for terminal colors, so its text area keeps its own palette. |
+
+Open terminals pick up the new colors in new windows. The terminal font is not changed: Chakra Petch is not a monospace font.
+
 ## libadwaita versions
 
 libadwaita 1.5 (Ubuntu 24.04) reads named colors such as `@define-color window_bg_color …`. From 1.6 on it reads CSS variables
 such as `:root { --window-bg-color: …; }` instead. `install.sh` checks the installed `libadwaita-1-0` package: on 1.6 or later it
 also turns every `@define-color` line of `gtk-4.0.css` into the matching variable (`window_bg_color` → `--window-bg-color`).
-After an Ubuntu upgrade, run `./install.sh` again to switch format.
+After an Ubuntu upgrade, run `./install.sh` again to switch format. The stylesheet written for the Ptyxis Flatpak always uses
+variables, because Flathub runtimes ship libadwaita 1.6 or later.
 
 ## Uninstall: back to the original theme
 
@@ -86,8 +111,8 @@ After an Ubuntu upgrade, run `./install.sh` again to switch format.
 ```
 
 It restores exactly what was saved at the first install (GTK theme, color scheme, Shell theme, User Themes extension on/off,
-your previous `gtk.css` files) and deletes every DarkRedHack file, the Chakra Petch font included. No restart is needed: the top bar
-switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
+your previous `gtk.css` files, the previous default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch font and
+the terminal profiles included. No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
 To remove them too:
 
 ```bash
@@ -113,7 +138,8 @@ Edit the files in this folder, then run `./install.sh` again to rebuild and relo
 
 | File | What it controls |
 |---|---|
-| `palette.css` | Every theme color, in one place (`@define-color drh_…`). GTK3 and GTK4 read it directly, `install.sh` pastes the values into the Shell stylesheet, `recolor.py` takes the red, amber and green hues from it. To change the accent, edit `drh_red`, `drh_red_fill` and the three `rgba(…)` red lines. |
+| `palette.css` | Every theme color, in one place (`@define-color drh_…`), terminal colors included. GTK3 and GTK4 read it directly, `install.sh` pastes the values into the Shell stylesheet and the terminal files, `recolor.py` takes the red, amber and green hues from it. To change the accent, edit `drh_red`, `drh_red_fill` and the three `rgba(…)` red lines. |
+| `terminals/` | One template per terminal (`gnome-terminal.dconf`, `ptyxis.palette`, `alacritty.toml`, `kitty.conf`) with `@drh_…` names: which palette color goes in which ANSI slot. |
 | `recolor.py` | How Yaru-dark colors are converted (greys, orange → red, yellow → amber, green → teal) and the corner radius. `MAX_RADIUS = 0` squares everything (px, %, SVG `rx`/`ry`); `LIGHTNESS_CURVE` makes surfaces darker or lighter. |
 | `shell-extra.css` | Extra GNOME Shell rules: Chakra Petch, top bar line, red bars on menus and notifications, menu highlights, dock corners. Colors are written as `@drh_…` names. |
 | `gtk-4.0.css` | GTK4/libadwaita colors (`@define-color …`, from the palette), square corners, red window frame, text fields. |
@@ -132,6 +158,21 @@ Edit the files in this folder, then run `./install.sh` again to rebuild and relo
 | Red line / tint / strong tint | `drh_red_line` / `drh_red_tint` / `drh_red_tint_strong` | red at 45% / 12% / 22% |
 | Amber (warnings) | `drh_amber` | `#ffbb00` |
 | Green (success) | `drh_green` | `#0fd29b` |
+
+Terminal ANSI slots (`terminals/`):
+
+| Slot | 0–7 (normal) | 8–15 (bright) |
+|---|---|---|
+| Black | `drh_raised` `#17171a` | `drh_bright_black` `#5c5f68` |
+| Red | `drh_red` `#ff0027` | `drh_bright_red` `#ff4965` |
+| Green | `drh_green` `#0fd29b` | `drh_bright_green` `#5af0c2` |
+| Yellow | `drh_amber` `#ffbb00` | `drh_bright_yellow` `#ffd24d` |
+| Blue | `drh_blue` `#4c8dff` | `drh_bright_blue` `#8ab4ff` |
+| Magenta | `drh_magenta` `#e0349e` | `drh_bright_magenta` `#ff79c6` |
+| Cyan | `drh_cyan` `#00c2d1` | `drh_bright_cyan` `#5ee7f0` |
+| White | `drh_white` `#b4b7bf` | `drh_fg` `#e6e8ec` |
+
+Background `drh_bg`, text `drh_fg`, cursor `drh_red`, selection `drh_red_fill` with white text.
 
 ### Notes for editing the stylesheets
 
@@ -157,7 +198,8 @@ Errors show up in the session log: `journalctl --user -f -o cat | grep -i -E 'th
 - **An app is still light, or still has round buttons**: reopen it. Snap/Flatpak/Electron apps use Yaru-dark, not DarkRedHack:
   they stay dark but without the red touches.
 - **After an Ubuntu update the theme looks off**: run `./install.sh` again to rebuild it from the updated Yaru-dark.
-- **Terminal colors**: the terminal text area uses the profile palette (Terminal → Preferences → Profile → Colors), not the theme.
+- **A terminal is not in the DarkRedHack colors**: open a new window from the launcher, or pick the *DarkRedHack* profile in the
+  terminal preferences. Terminals installed after the theme need `./install.sh` again.
 
 ## Folder contents
 
@@ -168,6 +210,7 @@ DarkRedHack/
 ├── install.sh        unattended install + activation
 ├── uninstall.sh      restore the original look
 ├── palette.css       all theme colors
+├── terminals/        color templates for GNOME Terminal, Ptyxis, Alacritty and kitty
 ├── recolor.py        Yaru-dark → DarkRedHack converter (colors + corners, CSS/SVG/PNG)
 ├── shell-extra.css   GNOME Shell extra rules
 ├── gtk-4.0.css       GTK4 / libadwaita colors and shapes

@@ -16,3 +16,16 @@
 @define-color drh_red_tint_strong rgba(255, 0, 39, 0.22);
 @define-color drh_amber #ffbb00;
 @define-color drh_green #0fd29b;
+
+/* Terminal (ANSI) colors the desktop does not use; terminals/ maps all 16 slots onto this palette. */
+@define-color drh_blue #4c8dff;
+@define-color drh_magenta #e0349e;
+@define-color drh_cyan #00c2d1;
+@define-color drh_white #b4b7bf;
+@define-color drh_bright_black #5c5f68;
+@define-color drh_bright_red #ff4965;
+@define-color drh_bright_green #5af0c2;
+@define-color drh_bright_yellow #ffd24d;
+@define-color drh_bright_blue #8ab4ff;
+@define-color drh_bright_magenta #ff79c6;
+@define-color drh_bright_cyan #5ee7f0;
