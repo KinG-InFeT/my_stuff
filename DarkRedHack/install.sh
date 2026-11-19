@@ -7,6 +7,7 @@
 #   GTK4/libadwaita -> ~/.config/gtk-4.0/gtk.css
 #   Chakra Petch    -> ~/.local/share/fonts/ChakraPetch  (Google Fonts, OFL)
 #   Terminals       -> a DarkRedHack profile for GNOME Terminal and Ptyxis, a color file for Alacritty and kitty
+#   VS Code         -> the DarkRedHack color theme and a DarkRedHack profile (a copy of the Default one)
 #
 # The GTK theme stays "Yaru-dark" and the color scheme is forced to dark, so Snap/Flatpak and
 # Electron apps (Slack, Firefox, ...), which cannot read custom themes, stay dark too.
@@ -34,7 +35,7 @@ GT=/org/gnome/terminal/legacy/profiles:
 GT_UUID=a302d580-50d7-4ed4-bd6f-91974153d618
 GT_BUILTIN=b1dcc9dd-5262-4d8d-a863-c897e6d979b9
 PTYXIS_UUID=b49cc603d8794dba877309d3de778fbf
-PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions fonts-jetbrains-mono python3-pil curl fontconfig
+PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions fonts-jetbrains-mono python3-pil curl zip fontconfig
   libglib2.0-bin dconf-cli xdotool)
 
 recolor() { python3 -I "$SRC/recolor.py" "$@"; }
@@ -192,6 +193,26 @@ if command -v kitty > /dev/null; then
   terminal kitty.conf > "$HOME/.config/kitty/darkredhack.conf"
   grep -qsx 'include darkredhack.conf' "$HOME/.config/kitty/kitty.conf" \
     || echo 'include darkredhack.conf' >> "$HOME/.config/kitty/kitty.conf"
+fi
+
+if command -v code > /dev/null; then
+  echo "==> Building the VS Code theme"
+  build=$(mktemp -d)
+  mkdir -p "$build/extension/themes"
+  cp "$SRC/vscode/package.json" "$build/extension/"
+  # "@drh_name/AA" in the template is a palette color with the hex alpha AA: "#rrggbb/AA" becomes "#rrggbbAA".
+  palette < "$SRC/vscode/darkredhack-color-theme.json" | sed -E 's|(#[0-9a-fA-F]{6})/([0-9a-fA-F]{2})|\1\2|g' \
+    > "$build/extension/themes/darkredhack-color-theme.json"
+  (cd "$build" && zip -qr darkredhack.vsix extension)
+  NODE_NO_WARNINGS=1 code --install-extension "$build/darkredhack.vsix" --force > /dev/null
+  rm -rf "$build"
+  # VS Code rewrites its profile list on exit, so the profile is registered only while it is closed.
+  if pgrep -x code > /dev/null; then
+    echo "    VS Code is open: close it and run ./install.sh again to create the DarkRedHack profile"
+  else
+    python3 -I "$SRC/vscode/profile.py" create
+    echo "    DarkRedHack profile ready: switch to it from the Profiles menu, or run: code --profile DarkRedHack"
+  fi
 fi
 
 echo "==> Activating"

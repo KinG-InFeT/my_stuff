@@ -3,6 +3,7 @@
 # Installed packages (User Themes extension, JetBrains Mono, Pillow, curl, xdotool) are kept: they are harmless.
 set -euo pipefail
 
+SRC="$(cd "$(dirname "$0")" && pwd)"
 GTK3="$HOME/.config/gtk-3.0"
 GTK4="$HOME/.config/gtk-4.0"
 STATE="$HOME/.config/darkredhack-theme"
@@ -67,6 +68,16 @@ rm -f "$HOME/.config/alacritty/darkredhack.toml" "$HOME/.config/kitty/darkredhac
 drop_line "$HOME/.config/alacritty/alacritty.toml" 'import = ["~/.config/alacritty/darkredhack.toml"]'
 drop_line "$HOME/.config/kitty/kitty.conf" 'include darkredhack.conf'
 rmdir --ignore-fail-on-non-empty "$HOME/.config/alacritty" "$HOME/.config/kitty" 2> /dev/null || true
+
+# VS Code: theme out; the profile goes only while VS Code is closed, since it rewrites its profile list on exit.
+if command -v code > /dev/null; then
+  NODE_NO_WARNINGS=1 code --uninstall-extension darkredhack.darkredhack-theme > /dev/null 2>&1 || true
+  if pgrep -x code > /dev/null; then
+    echo "VS Code is open: delete the DarkRedHack profile from its Profiles menu."
+  else
+    python3 -I "$SRC/vscode/profile.py" remove
+  fi
+fi
 
 # Desktop settings changed one by one (fonts, GNOME Console), back to the values saved by install.sh.
 for f in "$STATE"/gsettings@*; do

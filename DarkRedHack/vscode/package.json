@@ -1,0 +1,22 @@
+{
+    "name": "darkredhack-theme",
+    "displayName": "DarkRedHack",
+    "description": "Black, red and flat: the DarkRedHack desktop theme for VS Code.",
+    "version": "1.0.0",
+    "publisher": "darkredhack",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "DarkRedHack",
+                "uiTheme": "vs-dark",
+                "path": "./themes/darkredhack-color-theme.json"
+            }
+        ]
+    }
+}

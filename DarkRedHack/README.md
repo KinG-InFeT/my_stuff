@@ -18,6 +18,8 @@ It covers the whole desktop: the top bar and menus (GNOME Shell), GTK3 apps and 
   terminal grid spreads its letters far apart. The system monospace font is left as it is, for code editors.
 - **Terminals**: a DarkRedHack color profile for GNOME Terminal, Ptyxis, Alacritty and kitty (black background, red cursor and
   selection, an ANSI palette built on the same colors). See [Terminals](#terminals).
+- **VS Code**: a DarkRedHack color theme (editor, sidebars, panels, integrated terminal, syntax) and a *DarkRedHack* profile
+  that uses it, so your Default profile keeps its own look. See [VS Code](#vs-code).
 
 ## Requirements
 
@@ -39,7 +41,7 @@ From a zip: `unzip DarkRedHack.zip && cd DarkRedHack && bash install.sh`.
 The script is unattended and can be run again at any time: it rebuilds the theme and reloads it. It does the following:
 
 1. **Packages**: installs Yaru, the *User Themes* GNOME Shell extension, the JetBrains Mono font, Pillow (to recolor PNG images),
-   `curl` and `xdotool` (used for the automatic Shell restart).
+   `curl`, `zip` (to package the VS Code theme) and `xdotool` (used for the automatic Shell restart).
 2. **Font** (first install only): downloads Chakra Petch (regular, medium, semibold, bold and the OFL license) into
    `~/.local/share/fonts/ChakraPetch/`.
 3. **Backup** (first install only): saves the current look (GTK theme, color scheme, Shell theme, extension state and any existing
@@ -50,7 +52,8 @@ The script is unattended and can be run again at any time: it rebuilds the theme
    window title font, selects DarkRedHack as Shell theme and enables the User Themes extension.
 6. **Terminals**: for each terminal found (GNOME Terminal, Ptyxis, Alacritty, kitty) it writes the DarkRedHack colors and makes
    them the default profile. See [Terminals](#terminals).
-7. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
+7. **VS Code** (when installed): installs the DarkRedHack theme and creates the *DarkRedHack* profile. See [VS Code](#vs-code).
+8. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
    on X11 the script triggers the restart by itself (same as `Alt+F2` → `r`: open windows are kept); on Wayland it asks you to log
    out and back in.
 
@@ -68,6 +71,7 @@ Already open apps pick up the new look when you reopen them.
 | Ptyxis profile and palette | native: dconf `/org/gnome/Ptyxis/` + `~/.local/share/org.gnome.Ptyxis/palettes/DarkRedHack.palette`; Flatpak: the same inside `~/.var/app/app.devsuite.Ptyxis/`, plus its `config/gtk-4.0/gtk.css` |
 | Alacritty | `~/.config/alacritty/darkredhack.toml` + one `import` line in `alacritty.toml` |
 | kitty | `~/.config/kitty/darkredhack.conf` + one `include darkredhack.conf` line in `kitty.conf` |
+| VS Code theme and profile | extension `darkredhack.darkredhack-theme` in `~/.vscode/extensions/`; profile in `~/.config/Code/User/profiles/darkredhack/` and in the profile list of `~/.config/Code/User/globalStorage/storage.json` |
 | Backup of the original look | `~/.config/darkredhack-theme/` |
 
 ## Why it is always dark
@@ -99,6 +103,24 @@ of 140 columns × 24 rows; fonts and size are set at the top of `install.sh` (`T
 Open terminals pick up the new colors in new windows. In Ptyxis the size applies to the windows you open; `ptyxis -x <command>`
 in version 50 still opens at 80 × 24.
 
+## VS Code
+
+`install.sh` packages `vscode/` into a local extension and installs it with `code --install-extension`: the *DarkRedHack* theme
+covers the window, editor, sidebars, panels, status bar, integrated terminal and syntax colors. It changes only colors: no font,
+icons or other settings.
+
+It then creates a *DarkRedHack* profile, so the Default profile keeps its current theme:
+
+- **Settings**: the profile gets its own copy of your Default settings, with `workbench.colorTheme` set to DarkRedHack. From then
+  on the two copies are separate: a setting changed in one profile does not reach the other. Running `./install.sh` again keeps the
+  profile's settings and only sets the theme again.
+- **Shared with Default**: extensions, keybindings, snippets, tasks, MCP servers and prompts. They stay the same in both profiles.
+- **Switch**: from the *Profiles* menu (gear icon → Profiles) or with `code --profile DarkRedHack`.
+
+VS Code rewrites its profile list when it closes, so the profile is created only while VS Code is closed: if it is open, the script
+installs the theme and asks you to close VS Code and run `./install.sh` again. With Settings Sync on, the profile is synced to your
+other computers too; there, without the theme installed, it shows the default theme.
+
 ## libadwaita versions
 
 libadwaita 1.5 (Ubuntu 24.04) reads named colors such as `@define-color window_bg_color …`. From 1.6 on it reads CSS variables
@@ -115,7 +137,8 @@ variables, because Flathub runtimes ship libadwaita 1.6 or later.
 
 It restores exactly what was saved at the first install (GTK theme, color scheme, Shell theme, User Themes extension on/off,
 your previous `gtk.css` files, the previous fonts and default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch
-font and the terminal profiles included. No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
+font, the terminal profiles and the VS Code theme and profile included (VS Code must be closed for the profile; if it is open,
+delete *DarkRedHack* from its Profiles menu). No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
 To remove them too:
 
 ```bash
@@ -147,6 +170,7 @@ Edit the files in this folder, then run `./install.sh` again to rebuild and relo
 | `shell-extra.css` | Extra GNOME Shell rules: Chakra Petch, top bar line, red bars on menus and notifications, menu highlights, dock corners. Colors are written as `@drh_…` names. |
 | `gtk-4.0.css` | GTK4/libadwaita colors (`@define-color …`, from the palette), square corners, red window frame, text fields. |
 | `gtk-extra.css` | Rules shared by GTK3 and GTK4: black windows, GTK3 window frame, `─┤ title ├─`, `[×]` window buttons, outlined buttons and text fields, sidebar selection, scrollbars. |
+| `vscode/` | The VS Code theme (`darkredhack-color-theme.json`, with `@drh_…` names; `@drh_name/AA` adds a hex alpha), its extension manifest and `profile.py`, which creates and removes the profile. |
 | `install.sh` / `uninstall.sh` | Build, activate and remove. |
 
 ### Palette (`palette.css`)
@@ -214,6 +238,7 @@ DarkRedHack/
 ├── uninstall.sh      restore the original look
 ├── palette.css       all theme colors
 ├── terminals/        color templates for GNOME Terminal, Ptyxis, Alacritty and kitty
+├── vscode/           VS Code color theme, extension manifest and profile script
 ├── recolor.py        Yaru-dark → DarkRedHack converter (colors + corners, CSS/SVG/PNG)
 ├── shell-extra.css   GNOME Shell extra rules
 ├── gtk-4.0.css       GTK4 / libadwaita colors and shapes
