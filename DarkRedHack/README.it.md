@@ -119,7 +119,10 @@ Poi crea un profilo *DarkRedHack*, così il profilo Default mantiene il tema att
   lì le due copie sono separate: un'impostazione cambiata in un profilo non arriva all'altro. Rilanciando `./install.sh` le
   impostazioni del profilo restano e viene solo reimpostato il tema.
 - **Condivisi con Default**: estensioni, scorciatoie, snippet, task, server MCP e prompt. Restano uguali nei due profili.
-- **Passare al profilo**: dal menu *Profili* (icona ingranaggio → Profili) oppure con `code --profile DarkRedHack`.
+- **Workspace**: ogni workspace e cartella salvati che si aprivano nel profilo Default da ora si aprono in DarkRedHack (i
+  workspace legati a un altro tuo profilo lo mantengono), e così le nuove finestre e i workspace aperti per la prima volta
+  (`window.newWindowProfile`). Rilanciando `./install.sh` torna su DarkRedHack anche un workspace che hai rimesso su Default.
+- **Cambiare profilo**: dal menu *Profili* (icona ingranaggio → Profili) oppure con `code --profile <nome>`.
 
 VS Code riscrive l'elenco dei profili quando si chiude, quindi il profilo viene creato solo a VS Code chiuso: se è aperto, lo
 script installa il tema e ti chiede di chiudere VS Code e rilanciare `./install.sh`. Con Settings Sync attivo il profilo si
@@ -141,7 +144,7 @@ scritto per il Flatpak di Ptyxis usa sempre le variabili, perché i runtime di F
 
 Ripristina esattamente quanto salvato alla prima installazione (tema GTK, schema colori, tema della Shell, estensione
 User Themes attiva o no, i tuoi `gtk.css` precedenti, i font e i profili predefiniti dei terminali precedenti) e cancella tutti i file di DarkRedHack,
-compresi il font Chakra Petch, i profili dei terminali e il tema e il profilo di VS Code (per il profilo VS Code deve essere
+compresi il font Chakra Petch, i profili dei terminali e il tema e il profilo di VS Code (i workspace tornano al profilo Default) (per il profilo VS Code deve essere
 chiuso; se è aperto, elimina *DarkRedHack* dal suo menu Profili).
 Non serve riavviare: la barra in alto torna subito com'era, le app quando le riapri. I pacchetti installati restano: senza il
 tema non cambiano nulla. Per rimuovere anche quelli:

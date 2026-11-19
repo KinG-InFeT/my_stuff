@@ -115,7 +115,10 @@ It then creates a *DarkRedHack* profile, so the Default profile keeps its curren
   on the two copies are separate: a setting changed in one profile does not reach the other. Running `./install.sh` again keeps the
   profile's settings and only sets the theme again.
 - **Shared with Default**: extensions, keybindings, snippets, tasks, MCP servers and prompts. They stay the same in both profiles.
-- **Switch**: from the *Profiles* menu (gear icon → Profiles) or with `code --profile DarkRedHack`.
+- **Workspaces**: every saved workspace and folder that opened in the Default profile opens in DarkRedHack from now on (workspaces
+  tied to another profile of yours keep it), and so do new windows and workspaces opened for the first time
+  (`window.newWindowProfile`). Running `./install.sh` again moves back to DarkRedHack any workspace you set to Default.
+- **Switch**: from the *Profiles* menu (gear icon → Profiles) or with `code --profile <name>`.
 
 VS Code rewrites its profile list when it closes, so the profile is created only while VS Code is closed: if it is open, the script
 installs the theme and asks you to close VS Code and run `./install.sh` again. With Settings Sync on, the profile is synced to your
@@ -137,7 +140,7 @@ variables, because Flathub runtimes ship libadwaita 1.6 or later.
 
 It restores exactly what was saved at the first install (GTK theme, color scheme, Shell theme, User Themes extension on/off,
 your previous `gtk.css` files, the previous fonts and default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch
-font, the terminal profiles and the VS Code theme and profile included (VS Code must be closed for the profile; if it is open,
+font, the terminal profiles and the VS Code theme and profile included (workspaces go back to the Default profile) (VS Code must be closed for the profile; if it is open,
 delete *DarkRedHack* from its Profiles menu). No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
 To remove them too:
 

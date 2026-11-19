@@ -211,7 +211,7 @@ if command -v code > /dev/null; then
     echo "    VS Code is open: close it and run ./install.sh again to create the DarkRedHack profile"
   else
     python3 -I "$SRC/vscode/profile.py" create
-    echo "    DarkRedHack profile ready: switch to it from the Profiles menu, or run: code --profile DarkRedHack"
+    echo "    DarkRedHack profile ready: saved workspaces and new windows open in it"
   fi
 fi
 
