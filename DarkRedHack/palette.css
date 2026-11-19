@@ -1,0 +1,18 @@
+/* DarkRedHack palette (cve.now): the single place where the theme colors are defined.
+ * GTK3 and GTK4 read these named colors directly. install.sh pastes the values into the GNOME Shell stylesheet,
+ * which has no variables, and recolor.py takes the red, amber and green hues from here. */
+@define-color drh_bg #0a0a0b;
+@define-color drh_surface #111113;
+@define-color drh_surface_alt #0e0e10;
+@define-color drh_raised #17171a;
+@define-color drh_line #222226;
+@define-color drh_line_strong #2c2c31;
+@define-color drh_fg #e6e8ec;
+@define-color drh_muted #8a8d96;
+@define-color drh_red #ff0027;
+@define-color drh_red_fill #d70022;
+@define-color drh_red_line rgba(255, 0, 39, 0.45);
+@define-color drh_red_tint rgba(255, 0, 39, 0.12);
+@define-color drh_red_tint_strong rgba(255, 0, 39, 0.22);
+@define-color drh_amber #ffbb00;
+@define-color drh_green #0fd29b;

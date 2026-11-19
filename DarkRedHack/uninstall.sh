@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Remove the DarkRedHack theme and restore the look saved by install.sh. Unattended, no restart needed.
-# Installed packages (User Themes extension, JetBrains Mono, xdotool) are kept: they are harmless.
+# Installed packages (User Themes extension, Pillow, curl, xdotool) are kept: they are harmless.
 set -euo pipefail
 
 GTK3="$HOME/.config/gtk-3.0"
@@ -31,7 +31,8 @@ fi
 # GTK: original theme and color scheme, our stylesheets out, the previous ones back.
 gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
 gsettings set org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
-rm -rf "$HOME/.local/share/themes/DarkRedHack" "$GTK3/darkredhack-assets"
+rm -rf "$HOME/.local/share/themes/DarkRedHack" "$GTK3/darkredhack-assets" "$HOME/.local/share/fonts/ChakraPetch"
+fc-cache -f "$HOME/.local/share/fonts"
 rm -f "$GTK3/gtk.css" "$GTK4/gtk.css"
 if [[ -e $STATE/gtk3.css.orig ]]; then mv "$STATE/gtk3.css.orig" "$GTK3/gtk.css"; fi
 if [[ -e $STATE/gtk4.css.orig ]]; then mv "$STATE/gtk4.css.orig" "$GTK4/gtk.css"; fi

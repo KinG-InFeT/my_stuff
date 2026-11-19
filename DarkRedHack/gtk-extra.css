@@ -1,27 +1,153 @@
 
-/* ---- DarkRedHack red touches, shared by GTK3 and GTK4 (appended to both user stylesheets) ---- */
+/* ---- DarkRedHack terminal-style windows, shared by GTK3 and GTK4 (appended to both user stylesheets) ----
+ * Colors come from palette.css. In GTK3 these rules sit in the same file as the recolored Yaru stylesheet,
+ * so selectors repeat the states (:hover, :backdrop, …) to win over Yaru's own rules. */
 
-/* Red text cursor everywhere. */
-* { caret-color: #ff0027; }
+/* Flat: red text cursor, no text or icon shadows. */
+* {
+  caret-color: @drh_red;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+/* Black windows and title bars (GTK3 surfaces would otherwise be Yaru's greys, only darkened by recolor.py). */
+window.background, window.background:backdrop,
+headerbar.titlebar, headerbar.titlebar:backdrop {
+  background-color: @drh_bg;
+  background-image: none;
+}
+
+/* GTK3 windows: no shadow, a 1px red frame (grey when unfocused). GTK4 does the same in gtk-4.0.css. */
+decoration { box-shadow: 0 0 0 1px @drh_red_line; }
+decoration:backdrop { box-shadow: 0 0 0 1px @drh_line_strong; }
+.maximized decoration, .maximized decoration:backdrop,
+.fullscreen decoration, .fullscreen decoration:backdrop { box-shadow: none; }
+.csd.popup decoration { box-shadow: 0 0 0 1px @drh_line_strong; }
 
 /* Red line under every title bar. */
-headerbar { box-shadow: inset 0 -1px rgba(255, 0, 39, 0.45); }
+headerbar { box-shadow: inset 0 -1px @drh_red_line; }
 
-/* Window titles: red monospace on the focused window, grey on the others. */
+/* Window title drawn like a terminal frame label: ─┤ title ├─ */
 headerbar .title {
-  color: #ff0027;
-  font-family: "JetBrains Mono", "Ubuntu Sans Mono", monospace;
-  font-weight: bold;
-  letter-spacing: 0.06em;
+  font-family: "Chakra Petch", "Ubuntu Sans", sans-serif;
+  font-weight: 600;
+  color: @drh_fg;
+  padding: 0 14px;
+  background-image:
+    linear-gradient(to right, transparent 5px, @drh_red_line 5px),
+    linear-gradient(@drh_red_line, @drh_red_line),
+    linear-gradient(to left, transparent 5px, @drh_red_line 5px),
+    linear-gradient(@drh_red_line, @drh_red_line);
+  background-size: 6px 100%, 6px 1px, 6px 100%, 6px 1px;
+  background-position: left top, left center, right top, right center;
+  background-repeat: no-repeat;
 }
-headerbar .title:backdrop { color: #8a8d96; }
+headerbar .title:backdrop {
+  color: @drh_muted;
+  background-image:
+    linear-gradient(to right, transparent 5px, @drh_line_strong 5px),
+    linear-gradient(@drh_line_strong, @drh_line_strong),
+    linear-gradient(to left, transparent 5px, @drh_line_strong 5px),
+    linear-gradient(@drh_line_strong, @drh_line_strong);
+}
+
+/* Window buttons drawn as [_] [□] [×]: brackets in the text color, red on hover.
+ * GTK3 repeats Yaru's own selectors (.titlebar … .close) so that, coming later, these rules win; GTK4 uses windowcontrols. */
+.titlebar button.titlebutton:not(.appmenu).close,
+.titlebar button.titlebutton:not(.appmenu).close:hover,
+.titlebar button.titlebutton:not(.appmenu).close:active,
+.titlebar button.titlebutton:not(.appmenu).close:backdrop,
+.titlebar button.titlebutton:not(.appmenu).maximize,
+.titlebar button.titlebutton:not(.appmenu).maximize:hover,
+.titlebar button.titlebutton:not(.appmenu).maximize:active,
+.titlebar button.titlebutton:not(.appmenu).maximize:backdrop,
+.titlebar button.titlebutton:not(.appmenu).minimize,
+.titlebar button.titlebutton:not(.appmenu).minimize:hover,
+.titlebar button.titlebutton:not(.appmenu).minimize:active,
+.titlebar button.titlebutton:not(.appmenu).minimize:backdrop,
+windowcontrols > button,
+windowcontrols > button:hover,
+windowcontrols > button:active,
+windowcontrols > button:backdrop {
+  min-width: 0;
+  min-height: 0;
+  margin: 0 2px;
+  padding: 2px 5px;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-size: 1px 100%, 4px 1px, 4px 1px, 1px 100%, 4px 1px, 4px 1px;
+  background-position: left top, left top, left bottom, right top, right top, right bottom;
+  background-repeat: no-repeat;
+}
+.titlebar button.titlebutton:not(.appmenu),
+windowcontrols > button { color: @drh_muted; }
+.titlebar button.titlebutton:not(.appmenu):hover,
+.titlebar button.titlebutton:not(.appmenu):active,
+windowcontrols > button:hover,
+windowcontrols > button:active { color: @drh_red; }
+.titlebar button.titlebutton:not(.appmenu):backdrop,
+windowcontrols > button:backdrop { color: @drh_line_strong; }
+
+/* Text buttons: outlined like [ Go ], no fill; red outline on hover. */
+button.text-button:not(.flat),
+button.text-button:not(.flat):backdrop {
+  background-color: transparent;
+  background-image: none;
+  border-color: @drh_line_strong;
+  box-shadow: inset 0 0 0 1px @drh_line_strong;
+  text-shadow: none;
+}
+button.text-button:not(.flat):hover,
+button.text-button:not(.flat):active,
+button.text-button:not(.flat):checked {
+  background-color: @drh_red_tint;
+  background-image: none;
+  border-color: @drh_red_line;
+  box-shadow: inset 0 0 0 1px @drh_red_line;
+}
+
+/* Main and destructive actions: red outline and red text instead of a red fill. */
+button.suggested-action, button.destructive-action,
+button.suggested-action:backdrop, button.destructive-action:backdrop,
+headerbar button.suggested-action, headerbar button.destructive-action {
+  color: @drh_red;
+  background-color: transparent;
+  background-image: none;
+  border-color: @drh_red;
+  box-shadow: inset 0 0 0 1px @drh_red;
+  text-shadow: none;
+}
+button.suggested-action:hover, button.destructive-action:hover,
+button.suggested-action:active, button.destructive-action:active,
+headerbar button.suggested-action:hover, headerbar button.destructive-action:hover {
+  background-color: @drh_red_tint_strong;
+  background-image: none;
+}
+
+/* Text fields: outlined, red line while typing (the GTK4 focus rule is in gtk-4.0.css). */
+entry:not(.flat),
+entry:not(.flat):backdrop {
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid @drh_line_strong;
+  box-shadow: none;
+}
+entry:not(.flat):focus { border-color: @drh_red; }
 
 /* Selected sidebar row: red tint and a red marker on the left. */
 .navigation-sidebar > row:selected {
-  background-color: rgba(255, 0, 39, 0.14);
-  box-shadow: inset 2px 0 #ff0027;
+  background-color: @drh_red_tint;
+  box-shadow: inset 2px 0 @drh_red;
 }
 
 /* Scrollbars turn red when grabbed. */
 scrollbar slider:hover,
-scrollbar slider:active { background-color: #ff0027; }
+scrollbar slider:active { background-color: @drh_red; }

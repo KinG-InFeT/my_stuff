@@ -5,6 +5,7 @@
 #   GNOME Shell     -> ~/.local/share/themes/DarkRedHack/gnome-shell  (via the User Themes extension)
 #   GTK3 apps       -> ~/.config/gtk-3.0/gtk.css + darkredhack-assets/
 #   GTK4/libadwaita -> ~/.config/gtk-4.0/gtk.css
+#   Chakra Petch    -> ~/.local/share/fonts/ChakraPetch  (Google Fonts, OFL)
 #
 # The GTK theme stays "Yaru-dark" and the color scheme is forced to dark, so Snap/Flatpak and
 # Electron apps (Slack, Firefox, ...), which cannot read custom themes, stay dark too.
@@ -19,14 +20,30 @@ SHELL_DEST="$HOME/.local/share/themes/DarkRedHack/gnome-shell"
 GTK3="$HOME/.config/gtk-3.0"
 GTK4="$HOME/.config/gtk-4.0"
 STATE="$HOME/.config/darkredhack-theme"
+FONT_DIR="$HOME/.local/share/fonts/ChakraPetch"
+FONT_URL=https://github.com/google/fonts/raw/main/ofl/chakrapetch
 USER_THEME=user-theme@gnome-shell-extensions.gcampax.github.com
-PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions fonts-jetbrains-mono libglib2.0-bin dconf-cli xdotool)
+PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions python3-pil curl fontconfig libglib2.0-bin dconf-cli xdotool)
 
-recolor() { python3 -I "$SRC/recolor.py"; }
+recolor() { python3 -I "$SRC/recolor.py" "$@"; }
+# The GNOME Shell stylesheet has no variables: paste the palette.css values in place of the @drh_* names.
+palette() { sed -E "$(sed -nE 's/^@define-color (drh_[a-z_]+) (.+);$/s|@\1\\b|\2|g;/p' "$SRC/palette.css")"; }
 
 echo "==> Installing packages"
 apt_install() { sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "${PACKAGES[@]}" > /dev/null; }
 apt_install || { sudo apt-get update -qq && apt_install; }
+
+# OFL.txt is downloaded last, so it marks a complete download.
+NEW_FONT=no
+if [[ ! -f $FONT_DIR/OFL.txt ]]; then
+  echo "==> Installing the Chakra Petch font"
+  mkdir -p "$FONT_DIR"
+  for f in ChakraPetch-Regular.ttf ChakraPetch-Medium.ttf ChakraPetch-SemiBold.ttf ChakraPetch-Bold.ttf OFL.txt; do
+    curl -fsSL -o "$FONT_DIR/$f" "$FONT_URL/$f"
+  done
+  fc-cache -f "$FONT_DIR"
+  NEW_FONT=yes
+fi
 
 mkdir -p "$GTK3" "$GTK4"
 if [[ ! -f $STATE/original.env ]]; then
@@ -52,7 +69,7 @@ for f in "$YARU"/gnome-shell/*; do
   esac
 done
 sed -i 's|resource:///org/gnome/shell/theme/||g' "$SHELL_DEST/gnome-shell.css"
-cat "$SRC/shell-extra.css" >> "$SHELL_DEST/gnome-shell.css"
+palette < "$SRC/shell-extra.css" >> "$SHELL_DEST/gnome-shell.css"
 
 echo "==> Building the GTK3 and GTK4 stylesheets"
 rm -rf "$GTK3/darkredhack-assets" && mkdir -p "$GTK3/darkredhack-assets"
@@ -64,11 +81,20 @@ gresource list "$GRES" | grep "^$RES/assets/" | while read -r res; do
     gresource extract "$GRES" "$res" > "$out"
   fi
 done
+# Symbolic PNGs are left alone: GTK paints them in the text color by itself.
+find "$GTK3/darkredhack-assets" -name '*.png' ! -name '*.symbolic.png' -exec python3 -I "$SRC/recolor.py" --png {} +
 {
   gresource extract "$GRES" "$RES/gtk.css" | recolor | sed 's|url("assets/|url("darkredhack-assets/|g'
-  cat "$SRC/gtk-extra.css"
+  cat "$SRC/palette.css" "$SRC/gtk-extra.css"
 } > "$GTK3/gtk.css"
-cat "$SRC/gtk-4.0.css" "$SRC/gtk-extra.css" > "$GTK4/gtk.css"
+{
+  cat "$SRC/palette.css" "$SRC/gtk-4.0.css" "$SRC/gtk-extra.css"
+  # libadwaita 1.6+ styles its widgets with CSS variables (--window-bg-color) instead of named colors.
+  if dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libadwaita-1-0)" ge 1.6; then
+    palette < "$SRC/gtk-4.0.css" | awk '$1 == "@define-color" {
+      name = $2; gsub("_", "-", name); $1 = $2 = ""; sub(/^ +/, ""); print ":root { --" name ": " $0 " }" }'
+  fi
+} > "$GTK4/gtk.css"
 
 echo "==> Activating"
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
@@ -84,8 +110,8 @@ case $enabled in
   *) gsettings set org.gnome.shell enabled-extensions "${enabled%]}, '$USER_THEME']" ;;
 esac
 
-# A running GNOME Shell only discovers newly installed extensions when it restarts.
-if gnome-extensions info "$USER_THEME" > /dev/null 2>&1; then
+# A running GNOME Shell only discovers newly installed extensions and fonts when it restarts.
+if [[ $NEW_FONT == no ]] && gnome-extensions info "$USER_THEME" > /dev/null 2>&1; then
   echo "Done: DarkRedHack is active. Reopen apps to see the change."
 elif [[ ${XDG_SESSION_TYPE:-} == x11 && -n ${DISPLAY:-} ]] \
   && gdbus call --session --dest org.gnome.ScreenSaver --object-path /org/gnome/ScreenSaver \

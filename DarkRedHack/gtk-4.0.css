@@ -1,63 +1,99 @@
-/* DarkRedHack look for GTK4 / libadwaita apps (libadwaita 1.5, GNOME 46).
- * install.sh writes this file + gtk-extra.css to ~/.config/gtk-4.0/gtk.css,
- * which GTK4 loads on top of any theme. */
+/* DarkRedHack look for GTK4 / libadwaita apps.
+ * install.sh writes palette.css + this file + gtk-extra.css to ~/.config/gtk-4.0/gtk.css, which GTK4 loads on top
+ * of any theme. libadwaita 1.5 reads the named colors below; on libadwaita 1.6+, which reads CSS variables,
+ * install.sh also turns every @define-color line into its variable (window_bg_color -> --window-bg-color). */
 
 /* Accent and status colors */
-@define-color accent_color #ff0027;
-@define-color accent_bg_color #d70022;
+@define-color accent_color @drh_red;
+@define-color accent_bg_color @drh_red_fill;
 @define-color accent_fg_color #ffffff;
-@define-color destructive_color #ff0027;
-@define-color destructive_bg_color #d70022;
+@define-color destructive_color @drh_red;
+@define-color destructive_bg_color @drh_red_fill;
 @define-color destructive_fg_color #ffffff;
-@define-color error_color #ff0027;
-@define-color error_bg_color #d70022;
+@define-color error_color @drh_red;
+@define-color error_bg_color @drh_red_fill;
 @define-color error_fg_color #ffffff;
-@define-color warning_color #ffbb00;
-@define-color warning_bg_color #ffbb00;
-@define-color warning_fg_color #0a0a0b;
-@define-color success_color #0fd29b;
-@define-color success_bg_color #0fd29b;
-@define-color success_fg_color #0a0a0b;
+@define-color warning_color @drh_amber;
+@define-color warning_bg_color @drh_amber;
+@define-color warning_fg_color @drh_bg;
+@define-color success_color @drh_green;
+@define-color success_bg_color @drh_green;
+@define-color success_fg_color @drh_bg;
 
 /* Surfaces */
-@define-color window_bg_color #0a0a0b;
-@define-color window_fg_color #e6e8ec;
-@define-color view_bg_color #111113;
-@define-color view_fg_color #e6e8ec;
-@define-color headerbar_bg_color #0a0a0b;
-@define-color headerbar_fg_color #e6e8ec;
-@define-color headerbar_border_color #222226;
-@define-color headerbar_backdrop_color #0a0a0b;
-@define-color headerbar_shade_color #222226;
-@define-color headerbar_darker_shade_color #2c2c31;
-@define-color sidebar_bg_color #111113;
-@define-color sidebar_fg_color #e6e8ec;
-@define-color sidebar_backdrop_color #111113;
-@define-color sidebar_shade_color #222226;
-@define-color sidebar_border_color #222226;
-@define-color secondary_sidebar_bg_color #0e0e10;
-@define-color secondary_sidebar_fg_color #e6e8ec;
-@define-color secondary_sidebar_backdrop_color #0e0e10;
-@define-color secondary_sidebar_shade_color #222226;
-@define-color secondary_sidebar_border_color #222226;
-@define-color card_bg_color #111113;
-@define-color card_fg_color #e6e8ec;
-@define-color card_shade_color #222226;
-@define-color dialog_bg_color #111113;
-@define-color dialog_fg_color #e6e8ec;
-@define-color popover_bg_color #17171a;
-@define-color popover_fg_color #e6e8ec;
+@define-color window_bg_color @drh_bg;
+@define-color window_fg_color @drh_fg;
+@define-color view_bg_color @drh_surface;
+@define-color view_fg_color @drh_fg;
+@define-color headerbar_bg_color @drh_bg;
+@define-color headerbar_fg_color @drh_fg;
+@define-color headerbar_border_color @drh_line;
+@define-color headerbar_backdrop_color @drh_bg;
+@define-color headerbar_shade_color @drh_line;
+@define-color headerbar_darker_shade_color @drh_line_strong;
+@define-color sidebar_bg_color @drh_surface;
+@define-color sidebar_fg_color @drh_fg;
+@define-color sidebar_backdrop_color @drh_surface;
+@define-color sidebar_shade_color @drh_line;
+@define-color sidebar_border_color @drh_line;
+@define-color secondary_sidebar_bg_color @drh_surface_alt;
+@define-color secondary_sidebar_fg_color @drh_fg;
+@define-color secondary_sidebar_backdrop_color @drh_surface_alt;
+@define-color secondary_sidebar_shade_color @drh_line;
+@define-color secondary_sidebar_border_color @drh_line;
+@define-color card_bg_color @drh_surface;
+@define-color card_fg_color @drh_fg;
+@define-color card_shade_color @drh_line;
+@define-color dialog_bg_color @drh_surface;
+@define-color dialog_fg_color @drh_fg;
+@define-color popover_bg_color @drh_raised;
+@define-color popover_fg_color @drh_fg;
 @define-color popover_shade_color rgba(0, 0, 0, 0.5);
-@define-color thumbnail_bg_color #17171a;
-@define-color thumbnail_fg_color #e6e8ec;
+@define-color thumbnail_bg_color @drh_raised;
+@define-color thumbnail_fg_color @drh_fg;
+@define-color overview_bg_color @drh_bg;
+@define-color overview_fg_color @drh_fg;
+@define-color active_toggle_bg_color @drh_raised;
+@define-color active_toggle_fg_color @drh_fg;
 @define-color shade_color rgba(0, 0, 0, 0.5);
 @define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
 
-/* Square corners everywhere, sharp windows; circles only where the shape means something. */
-* { border-radius: 2px; }
-window, headerbar, .titlebar { border-radius: 0; }
-checkbutton > radio, avatar, scale > trough > slider { border-radius: 9999px; }
+/* Flat and square: no rounded corner anywhere, radio buttons, switches, avatars and slider knobs included. */
+* { border-radius: 0; }
+scale > trough > slider { transform: none; box-shadow: none; }
 
 /* Crisp 1px lines instead of soft shadows. */
-.card, list.boxed-list, list.content { box-shadow: 0 0 0 1px #222226; }
-popover > contents { box-shadow: 0 0 0 1px #2c2c31, 0 4px 12px rgba(0, 0, 0, 0.5); }
+.card, list.boxed-list, list.content { box-shadow: 0 0 0 1px @drh_line; }
+popover > contents { box-shadow: 0 0 0 1px @drh_line_strong; }
+
+/* Terminal-style windows: no shadow, a 1px red frame (grey when unfocused).
+ * The transparent shadows only keep the invisible resize border around the window. */
+window.csd,
+window.csd:backdrop {
+  box-shadow: 0 1px 3px 3px transparent;
+  outline: 1px solid @drh_red_line;
+  outline-offset: -1px;
+}
+window.csd:backdrop { outline-color: @drh_line_strong; }
+window.csd.tiled, window.csd.tiled-top, window.csd.tiled-left, window.csd.tiled-right, window.csd.tiled-bottom {
+  box-shadow: 0 0 0 20px transparent;
+}
+window.csd.maximized, window.csd.fullscreen { box-shadow: none; outline: none; }
+
+/* Window buttons: just the bracketed glyph, no round background. */
+windowcontrols > button > image,
+windowcontrols > button:hover > image,
+windowcontrols > button:active > image { background: none; padding: 0; }
+
+/* Text fields: outlined (see gtk-extra.css), red line while typing. */
+spinbutton:not(.flat) {
+  background-color: transparent;
+  border: 1px solid @drh_line_strong;
+}
+entry:not(.flat):focus-within, spinbutton:not(.flat):focus-within {
+  border-color: @drh_red;
+  outline-width: 0;
+}
+
+/* Big page titles in Chakra Petch too. */
+.title-1, .title-2, .title-3, .title-4 { font-family: "Chakra Petch", "Ubuntu Sans", sans-serif; }
