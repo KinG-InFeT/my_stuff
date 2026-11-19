@@ -1,7 +1,11 @@
-# DarkRedHack profile for GNOME Terminal: install.sh fills in the @drh_* colors from palette.css and loads it with
-# `dconf load /org/gnome/terminal/legacy/profiles:/:<uuid>/`.
+# DarkRedHack profile for GNOME Terminal: install.sh fills in the @drh_* colors from palette.css and the terminal font
+# (@font_family, @font_size), then loads it with `dconf load /org/gnome/terminal/legacy/profiles:/:<uuid>/`.
 [/]
 visible-name='DarkRedHack'
+use-system-font=false
+font='@font_family @font_size'
+default-size-columns=140
+default-size-rows=24
 use-theme-colors=false
 use-transparent-background=false
 background-color='@drh_bg'

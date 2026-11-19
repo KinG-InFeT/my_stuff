@@ -13,8 +13,10 @@ Copre tutto il desktop: barra in alto e menu (GNOME Shell), app GTK3 e app GTK4/
   solo bordati come `[ Go ]`, azioni principali e distruttive con bordo e testo rossi invece del riempimento rosso.
 - **Tocchi di rosso**: linea rossa sotto la barra in alto e sotto ogni barra del titolo, barrette rosse dei workspace,
   toggle e interruttori rossi, indicatori rossi sulle voci di menu e sulle righe selezionate della barra laterale, cursore di testo rosso.
-- **Chakra Petch** ([Google Fonts](https://fonts.google.com/specimen/Chakra+Petch), licenza OFL): tutta la GNOME Shell, i titoli delle
-  finestre e i titoli grandi delle pagine. Il testo normale delle app resta nel font di sistema, per leggibilità.
+- **Chakra Petch** ([Google Fonts](https://fonts.google.com/specimen/Chakra+Petch), licenza OFL): il font dell'interfaccia di GNOME
+  (Shell, app, documenti, titoli delle finestre). I terminali usano **JetBrains Mono**: serve un font monospaziato, e Chakra Petch è
+  proporzionale, quindi la griglia del terminale ne distanzia molto le lettere. Il font monospaziato di sistema resta com'è, per gli
+  editor di codice.
 - **Terminali**: un profilo colori DarkRedHack per GNOME Terminal, Ptyxis, Alacritty e kitty (sfondo nero, cursore e selezione
   rossi, una palette ANSI costruita sugli stessi colori). Vedi [Terminali](#terminali).
 
@@ -38,16 +40,17 @@ Partendo dallo zip: `unzip DarkRedHack.zip && cd DarkRedHack && bash install.sh`
 
 Lo script non richiede interventi e si può rilanciare in qualsiasi momento: ricostruisce il tema e lo ricarica. Fa questo:
 
-1. **Pacchetti**: installa Yaru, l'estensione di GNOME Shell *User Themes*, Pillow (per ricolorare le immagini PNG), `curl` e
-   `xdotool` (serve per il riavvio automatico della Shell).
+1. **Pacchetti**: installa Yaru, l'estensione di GNOME Shell *User Themes*, il font JetBrains Mono, Pillow (per ricolorare le
+   immagini PNG), `curl` e `xdotool` (serve per il riavvio automatico della Shell).
 2. **Font** (solo alla prima installazione): scarica Chakra Petch (regular, medium, semibold, bold e la licenza OFL) in
    `~/.local/share/fonts/ChakraPetch/`.
 3. **Backup** (solo alla prima installazione): salva l'aspetto attuale (tema GTK, schema colori, tema della Shell, stato
    dell'estensione ed eventuali `~/.config/gtk-3.0/gtk.css` / `~/.config/gtk-4.0/gtk.css` già presenti) in `~/.config/darkredhack-theme/`.
 4. **Costruzione**: trasforma Yaru-dark in DarkRedHack con `recolor.py` (ricolorazione di CSS, SVG e PNG + angoli squadrati) e
    aggiunge i fogli di stile extra, con i colori presi da `palette.css`.
-5. **Attivazione**: forza lo schema colori scuro, mantiene `Yaru-dark` come tema GTK, seleziona DarkRedHack come tema della
-   Shell e abilita l'estensione User Themes.
+5. **Attivazione**: forza lo schema colori scuro, mantiene `Yaru-dark` come tema GTK, imposta Chakra Petch come font
+   dell'interfaccia, dei documenti e dei titoli delle finestre, seleziona DarkRedHack come tema della Shell e abilita l'estensione
+   User Themes.
 6. **Terminali**: per ogni terminale trovato (GNOME Terminal, Ptyxis, Alacritty, kitty) scrive i colori DarkRedHack e li rende
    il profilo predefinito. Vedi [Terminali](#terminali).
 7. **Riavvio della Shell**: GNOME Shell vede un'estensione o un font appena installati solo dopo un riavvio. Quando ne è appena
@@ -86,7 +89,8 @@ Se succede, rilancia `./install.sh`.
 
 `install.sh` applica il tema a ogni terminale che trova e salta gli altri: se installi un terminale dopo, rilancia `./install.sh`.
 Non cambia mai quale app è il terminale predefinito; dentro ogni terminale rende DarkRedHack il profilo predefinito e
-`uninstall.sh` rimette il profilo predefinito precedente.
+`uninstall.sh` rimette il profilo predefinito precedente. Ogni terminale riceve i colori DarkRedHack, JetBrains Mono 11 e nuove
+finestre da 140 colonne × 24 righe; font e dimensione si impostano in cima a `install.sh` (`TERMINAL_FONT_FAMILY`, `TERMINAL_FONT_SIZE`).
 
 | Terminale | Cosa ottieni |
 |---|---|
@@ -94,10 +98,10 @@ Non cambia mai quale app è il terminale predefinito; dentro ogni terminale rend
 | Ptyxis (terminale predefinito da Ubuntu 26.04) | Una palette e un profilo *DarkRedHack*, impostato come predefinito. Funziona col pacchetto nativo (26.04+) e con l'app Flathub su 24.04 (`flatpak install flathub app.devsuite.Ptyxis`), che riceve anche lo stile delle finestre DarkRedHack, perché le app Flatpak non leggono `~/.config/gtk-4.0/gtk.css`. |
 | Alacritty | `darkredhack.toml`, importato da `alacritty.toml` (`import` in cima al file prima della 0.14, `[general] import` dalla 0.14). I colori scritti in `alacritty.toml` stesso vincono sui file importati. Se `alacritty.toml` ha già una lista `import`, lo script ti chiede di aggiungerci il file. |
 | kitty | `darkredhack.conf`, incluso in fondo a `kitty.conf`, quindi vince sulle impostazioni di colore precedenti. |
-| GNOME Console | Solo lo stile della finestra. Console non ha impostazioni per i colori del terminale, quindi l'area di testo tiene la sua palette. |
+| GNOME Console | Solo lo stile della finestra e il font. Console non ha impostazioni per i colori del terminale né per la dimensione della finestra, quindi l'area di testo tiene la sua palette e la sua dimensione. |
 
-I terminali aperti prendono i nuovi colori nelle nuove finestre. Il font del terminale non viene cambiato: Chakra Petch non è un
-font monospaziato.
+I terminali aperti prendono i nuovi colori nelle nuove finestre. In Ptyxis la dimensione vale per le finestre che apri; `ptyxis -x
+<comando>` nella versione 50 si apre ancora a 80 × 24.
 
 ## Versioni di libadwaita
 
@@ -114,13 +118,13 @@ scritto per il Flatpak di Ptyxis usa sempre le variabili, perché i runtime di F
 ```
 
 Ripristina esattamente quanto salvato alla prima installazione (tema GTK, schema colori, tema della Shell, estensione
-User Themes attiva o no, i tuoi `gtk.css` precedenti, i profili predefiniti dei terminali) e cancella tutti i file di DarkRedHack,
+User Themes attiva o no, i tuoi `gtk.css` precedenti, i font e i profili predefiniti dei terminali precedenti) e cancella tutti i file di DarkRedHack,
 compresi il font Chakra Petch e i profili dei terminali.
 Non serve riavviare: la barra in alto torna subito com'era, le app quando le riapri. I pacchetti installati restano: senza il
 tema non cambiano nulla. Per rimuovere anche quelli:
 
 ```bash
-sudo apt remove gnome-shell-extensions xdotool
+sudo apt remove gnome-shell-extensions fonts-jetbrains-mono xdotool
 ```
 
 ### Ripristino manuale (se la cartella di backup non c'è più)

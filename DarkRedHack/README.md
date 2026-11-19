@@ -13,8 +13,9 @@ It covers the whole desktop: the top bar and menus (GNOME Shell), GTK3 apps and 
   main and destructive actions as red outlines instead of red fills.
 - **Red touches**: a red line under the top bar and under every title bar, red workspace bars, red toggles and switches,
   red markers on selected menu items and sidebar rows, a red text cursor.
-- **Chakra Petch** ([Google Fonts](https://fonts.google.com/specimen/Chakra+Petch), OFL): the whole GNOME Shell, window titles and
-  big page titles. Normal app text keeps the system font for readability.
+- **Chakra Petch** ([Google Fonts](https://fonts.google.com/specimen/Chakra+Petch), OFL): the GNOME interface font (Shell, apps,
+  documents, window titles). Terminals use **JetBrains Mono**: they need a monospace font, and Chakra Petch is proportional, so a
+  terminal grid spreads its letters far apart. The system monospace font is left as it is, for code editors.
 - **Terminals**: a DarkRedHack color profile for GNOME Terminal, Ptyxis, Alacritty and kitty (black background, red cursor and
   selection, an ANSI palette built on the same colors). See [Terminals](#terminals).
 
@@ -37,16 +38,16 @@ From a zip: `unzip DarkRedHack.zip && cd DarkRedHack && bash install.sh`.
 
 The script is unattended and can be run again at any time: it rebuilds the theme and reloads it. It does the following:
 
-1. **Packages**: installs Yaru, the *User Themes* GNOME Shell extension, Pillow (to recolor PNG images), `curl` and `xdotool`
-   (used for the automatic Shell restart).
+1. **Packages**: installs Yaru, the *User Themes* GNOME Shell extension, the JetBrains Mono font, Pillow (to recolor PNG images),
+   `curl` and `xdotool` (used for the automatic Shell restart).
 2. **Font** (first install only): downloads Chakra Petch (regular, medium, semibold, bold and the OFL license) into
    `~/.local/share/fonts/ChakraPetch/`.
 3. **Backup** (first install only): saves the current look (GTK theme, color scheme, Shell theme, extension state and any existing
    `~/.config/gtk-3.0/gtk.css` / `~/.config/gtk-4.0/gtk.css`) in `~/.config/darkredhack-theme/`.
 4. **Build**: turns Yaru-dark into DarkRedHack with `recolor.py` (CSS, SVG and PNG recolor + square corners) and adds the
    extra stylesheets, with the colors taken from `palette.css`.
-5. **Activate**: forces the dark color scheme, keeps `Yaru-dark` as GTK theme, selects DarkRedHack as Shell theme and enables the
-   User Themes extension.
+5. **Activate**: forces the dark color scheme, keeps `Yaru-dark` as GTK theme, sets Chakra Petch as interface, document and
+   window title font, selects DarkRedHack as Shell theme and enables the User Themes extension.
 6. **Terminals**: for each terminal found (GNOME Terminal, Ptyxis, Alacritty, kitty) it writes the DarkRedHack colors and makes
    them the default profile. See [Terminals](#terminals).
 7. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
@@ -84,7 +85,8 @@ If it happens, run `./install.sh` again.
 
 `install.sh` themes every terminal it finds and skips the others: install a terminal later and run `./install.sh` again.
 It never changes which terminal app is the default one; inside each terminal it makes DarkRedHack the default profile and
-`uninstall.sh` puts the previous default profile back.
+`uninstall.sh` puts the previous default profile back. Every terminal gets the DarkRedHack colors, JetBrains Mono 11 and new windows
+of 140 columns × 24 rows; fonts and size are set at the top of `install.sh` (`TERMINAL_FONT_FAMILY`, `TERMINAL_FONT_SIZE`).
 
 | Terminal | What you get |
 |---|---|
@@ -92,9 +94,10 @@ It never changes which terminal app is the default one; inside each terminal it 
 | Ptyxis (default terminal from Ubuntu 26.04) | A *DarkRedHack* palette and profile, set as default. Works with the native package (26.04+) and with the Flathub app on 24.04 (`flatpak install flathub app.devsuite.Ptyxis`), which also gets the DarkRedHack window style, since Flatpak apps do not read `~/.config/gtk-4.0/gtk.css`. |
 | Alacritty | `darkredhack.toml`, imported from `alacritty.toml` (top-level `import` before 0.14, `[general] import` from 0.14). Colors set in `alacritty.toml` itself win over imported files. If `alacritty.toml` already has an `import` list, the script asks you to add the file to it. |
 | kitty | `darkredhack.conf`, included at the end of `kitty.conf`, so it wins over earlier color settings. |
-| GNOME Console | Window style only. Console has no setting for terminal colors, so its text area keeps its own palette. |
+| GNOME Console | Window style and font only. Console has no setting for terminal colors or window size, so its text area keeps its own palette and size. |
 
-Open terminals pick up the new colors in new windows. The terminal font is not changed: Chakra Petch is not a monospace font.
+Open terminals pick up the new colors in new windows. In Ptyxis the size applies to the windows you open; `ptyxis -x <command>`
+in version 50 still opens at 80 × 24.
 
 ## libadwaita versions
 
@@ -111,12 +114,12 @@ variables, because Flathub runtimes ship libadwaita 1.6 or later.
 ```
 
 It restores exactly what was saved at the first install (GTK theme, color scheme, Shell theme, User Themes extension on/off,
-your previous `gtk.css` files, the previous default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch font and
-the terminal profiles included. No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
+your previous `gtk.css` files, the previous fonts and default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch
+font and the terminal profiles included. No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
 To remove them too:
 
 ```bash
-sudo apt remove gnome-shell-extensions xdotool
+sudo apt remove gnome-shell-extensions fonts-jetbrains-mono xdotool
 ```
 
 ### Manual revert (if the backup folder is gone)

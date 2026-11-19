@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Remove the DarkRedHack theme and restore the look saved by install.sh. Unattended, no restart needed.
-# Installed packages (User Themes extension, Pillow, curl, xdotool) are kept: they are harmless.
+# Installed packages (User Themes extension, JetBrains Mono, Pillow, curl, xdotool) are kept: they are harmless.
 set -euo pipefail
 
 GTK3="$HOME/.config/gtk-3.0"
@@ -51,13 +51,11 @@ elif flatpak info app.devsuite.Ptyxis > /dev/null 2>&1; then
   ptyxis=(flatpak run --command=gsettings app.devsuite.Ptyxis)
   ptyxis_palettes="$HOME/.var/app/app.devsuite.Ptyxis/data/app.devsuite.Ptyxis/palettes"
 fi
-if [[ -f $STATE/ptyxis-default ]] && (( ${#ptyxis[@]} )); then
-  default=$(< "$STATE/ptyxis-default")
-  if [[ $default == "''" ]]; then
-    "${ptyxis[@]}" reset org.gnome.Ptyxis default-profile-uuid
-  else
-    "${ptyxis[@]}" set org.gnome.Ptyxis default-profile-uuid "$default"
-  fi
+if (( ${#ptyxis[@]} )) && [[ -f $STATE/ptyxis@default-profile-uuid ]]; then
+  # Default profile, font and window size as they were.
+  for f in "$STATE"/ptyxis@*; do
+    "${ptyxis[@]}" set org.gnome.Ptyxis "${f##*/ptyxis@}" "$(< "$f")"
+  done
   "${ptyxis[@]}" set org.gnome.Ptyxis profile-uuids \
     "$(list_remove "$("${ptyxis[@]}" get org.gnome.Ptyxis profile-uuids)" "$PTYXIS_UUID")"
   "${ptyxis[@]}" reset-recursively "org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/$PTYXIS_UUID/"
@@ -69,6 +67,13 @@ rm -f "$HOME/.config/alacritty/darkredhack.toml" "$HOME/.config/kitty/darkredhac
 drop_line "$HOME/.config/alacritty/alacritty.toml" 'import = ["~/.config/alacritty/darkredhack.toml"]'
 drop_line "$HOME/.config/kitty/kitty.conf" 'include darkredhack.conf'
 rmdir --ignore-fail-on-non-empty "$HOME/.config/alacritty" "$HOME/.config/kitty" 2> /dev/null || true
+
+# Desktop settings changed one by one (fonts, GNOME Console), back to the values saved by install.sh.
+for f in "$STATE"/gsettings@*; do
+  [[ -f $f ]] || continue
+  id=${f##*/gsettings@}
+  gsettings set "${id%@*}" "${id#*@}" "$(< "$f")"
+done
 
 # GTK: original theme and color scheme, our stylesheets out, the previous ones back.
 gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"

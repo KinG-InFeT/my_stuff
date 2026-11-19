@@ -1,4 +1,14 @@
-# DarkRedHack colors for Alacritty: install.sh fills in the @drh_* colors from palette.css.
+# DarkRedHack colors for Alacritty: install.sh fills in the @drh_* colors from palette.css and the terminal font
+# (@font_family, @font_size).
+[window]
+dimensions = { columns = 140, lines = 24 }
+
+[font]
+size = @font_size
+
+[font.normal]
+family = "@font_family"
+
 [colors.primary]
 background = "@drh_bg"
 foreground = "@drh_fg"
