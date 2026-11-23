@@ -121,9 +121,54 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-cowsay -f tux 'Welcome Vincenzo Luongo'
-lsb_release -a 2>/dev/null
-echo ""
+# Welcome banner: the classic Tux, a quick system check and a random hacker quote.
+# No network calls, so a new terminal still opens instantly.
+welcome_banner() {
+    # DarkRedHack palette: bold red, red, dim grey, white, green.
+    local r=$'\e[1;38;2;255;0;39m' red=$'\e[0;38;2;255;0;39m' d=$'\e[0;38;2;92;95;104m' w=$'\e[0;38;2;230;232;236m'
+    local g=$'\e[0;38;2;15;210;155m' n=$'\e[0m'
+    local name os ip vpn=down i
+    name=$(getent passwd "$USER" | cut -d: -f5 | cut -d, -f1)
+    os=$(. /etc/os-release && echo "$PRETTY_NAME")
+    ip=$(hostname -I 2>/dev/null | cut -d' ' -f1)
+    [[ -n $(ip -br link show type wireguard 2>/dev/null)$(ip -br link show type tun 2>/dev/null) ]] && vpn=up
+    local quotes=(
+        "Hack the planet!"
+        "The quieter you become, the more you are able to hear."
+        "There is no patch for human stupidity."
+        "There's no place like 127.0.0.1"
+        "Never trust user input."
+        "Security is a process, not a product. (Bruce Schneier)"
+        "Talk is cheap. Show me the code. (Linus Torvalds)"
+        "It's not a bug, it's an undocumented feature."
+        "The only truly secure system is one that is powered off."
+        "Mess with the best, die like the rest."
+    )
+    local tux=(
+        $'        .--.'
+        $'       |o_o |'
+        $'       |:_/ |'
+        $'      //   \\ \\'
+        $'     (|     | )'
+        $'    /\'\\_   _/`\\'
+        $'    \\___)=(___/'
+    )
+    local info=(
+        "${d}[${g} OK ${d}] identity ...${n} ${w}${name:-$USER}${d} ($USER@$HOSTNAME)${n}"
+        "${d}[${g} OK ${d}] system .....${n} ${w}${os}${d} · kernel $(uname -r)${n}"
+        "${d}[${g} OK ${d}] uptime .....${n} ${w}$(uptime -p | sed 's/^up //')${d} · load $(cut -d' ' -f1 /proc/loadavg)${n}"
+        "${d}[${g} OK ${d}] network ....${n} ${w}${ip:-offline}${d} · vpn ${vpn}${n}"
+        "${d}[${g} OK ${d}] session ....${n} ${w}$(tty | sed 's|^/dev/||')${d} · $(date '+%a %d %b %Y %H:%M')${n}"
+        "${d}[${r} ** ${d}] status .....${n} ${r}ACCESS GRANTED${n}"
+        ""
+    )
+    echo
+    for i in "${!tux[@]}"; do
+        printf '%s%-16s%s  %s\n' "$r" "${tux[i]}" "$n" "${info[i]}"
+    done
+    printf '  %s> %s%s\n\n' "$red" "${quotes[RANDOM % ${#quotes[@]}]}" "$n"
+}
+welcome_banner
 
 export ANDROID_SDK_ROOT=/home/vluongo/Android/Sdk
 export PATH=${PATH}:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools

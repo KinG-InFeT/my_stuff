@@ -8,8 +8,8 @@
 
 <br><br>
 
-![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04-ff0027?style=flat-square&logo=ubuntu&logoColor=white&labelColor=0a0a0b)
-![GNOME](https://img.shields.io/badge/GNOME-46-ff0027?style=flat-square&logo=gnome&logoColor=white&labelColor=0a0a0b)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-26.04-ff0027?style=flat-square&logo=ubuntu&logoColor=white&labelColor=0a0a0b)
+![GNOME](https://img.shields.io/badge/GNOME-50-ff0027?style=flat-square&logo=gnome&logoColor=white&labelColor=0a0a0b)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-classic-ff0027?style=flat-square&logo=archlinux&logoColor=white&labelColor=0a0a0b)
 ![Fluxbox](https://img.shields.io/badge/Fluxbox-WM-ff0027?style=flat-square&labelColor=0a0a0b)
 ![Bash](https://img.shields.io/badge/Bash-prompt-ff0027?style=flat-square&logo=gnubash&logoColor=white&labelColor=0a0a0b)
@@ -18,10 +18,14 @@
 
 <br>
 
-<img src="images/sfondo.jpg" width="32%" alt="Arch Linux wallpaper with kernel code">
-<img src="images/sfondo_2.jpg" width="32%" alt="Tux wallpaper with code">
-<img src="images/sfondo_arch_lite.jpg" width="32%" alt="Arch Linux minimal wallpaper">
-<img src="images/sfondo_laravel.jpg" width="32%" alt="Ubuntu Laravel wallpaper">
+<img src="wallpapers/darkredhack.jpg" width="98%" alt="DarkRedHack wallpaper: an open red padlock on a circuit board, Hack the planet, access granted">
+
+<img src="wallpapers/sfondo.jpg" width="32%" alt="Arch Linux wallpaper with kernel code">
+<img src="wallpapers/sfondo_2.jpg" width="32%" alt="Tux wallpaper with code">
+<img src="wallpapers/sfondo_arch_lite.jpg" width="32%" alt="Arch Linux minimal wallpaper">
+<img src="wallpapers/sfondo_laravel.jpg" width="32%" alt="Ubuntu Laravel wallpaper">
+<img src="wallpapers/electr_bg.jpg" width="32%" alt="Blue circuit board wallpaper">
+<img src="wallpapers/cybersecurity-digital-security-concept.jpg" width="32%" alt="Cybersecurity wallpaper: padlocks over a city at night">
 
 </div>
 
@@ -33,47 +37,40 @@
 |---|---|---|
 | [`bashrc`](bashrc) | `~/.bashrc` | Two-line, git-aware red prompt, Tux welcome banner, aliases, dev toolchain |
 | [`conkyrc`](conkyrc) | `~/.conkyrc` | Transparent system monitor docked in the top-right corner |
-| [`DarkRedHack/`](DarkRedHack) | GNOME Shell + GTK3/4 | Dark, squared, red-accented "hacker" theme for the whole GNOME desktop |
+| [`DarkRedHack/`](DarkRedHack) | GNOME Shell + GTK3/4, terminals, VS Code | Dark, squared, red-accented "hacker" theme for the whole GNOME desktop |
 | [`vimrc`](vimrc) | `~/.vimrc` | Vim tuned for coding: omni-completion, ctags, rich status line, F-key shortcuts |
 | [`Xdefaults`](Xdefaults) | `~/.Xdefaults` | xterm and urxvt: black background, transparency, clickable URLs |
 | [`xinitrc`](xinitrc) | `~/.xinitrc` | Starts Fluxbox inside a D-Bus session |
 | [`fluxbox/`](fluxbox) | `~/.fluxbox/` | Window manager: menu, keys, startup, DarkRedArch and DarkBlueArch styles |
 | [`irssi/`](irssi) | `~/.irssi/` | IRC client: 11 networks preconfigured and the *darkblood* theme |
 | [`moc/`](moc) | `~/.moc/` | Console music player: *darkblood* theme and custom keymap |
-| [`images/`](images) | `~/img/` | Wallpapers and avatar |
+| [`wallpapers/`](wallpapers) | `~/Pictures/wallpapers/` (and `~/img/` for Fluxbox) | Wallpapers, from the Arch days to today |
+| [`images/`](images) | `~/img/` | Avatar |
 
 ---
 
-## 🖥️ The modern desk: Ubuntu 24.04 + GNOME 46
+## 🖥️ The modern desk: Ubuntu 26.04 + GNOME 50
 
 ### 🐚 Bash
 
-Every new terminal greets you with Tux, the distro info and a two-line prompt that shows the current git branch:
+Every new terminal opens with a hacker-style welcome: the classic Tux in red, a quick system check and a random hacker quote, then the two-line prompt that shows the current git branch:
 
 ```text
- _________________________
-< Welcome Vincenzo Luongo >
- -------------------------
-   \
-    \
-        .--.
-       |o_o |
-       |:_/ |
-      //   \ \
-     (|     | )
-    /'\_   _/`\
+        .--.      [ OK ] identity ... Vincenzo Luongo (user@host)
+       |o_o |     [ OK ] system ..... Ubuntu 26.04.1 LTS · kernel 7.0.0-44-generic
+       |:_/ |     [ OK ] uptime ..... 2 hours, 36 minutes · load 0.65
+      //   \ \    [ OK ] network .... 192.168.1.10 · vpn up
+     (|     | )   [ OK ] session .... pts/1 · lun 23 nov 2026 16:50
+    /'\_   _/`\   [ ** ] status ..... ACCESS GRANTED
     \___)=(___/
-
-Distributor ID: Ubuntu
-Description:    Ubuntu 24.04 LTS
-Release:        24.04
-Codename:       noble
+  > The quieter you become, the more you are able to hear.
 
 user @ host - [master]
 ~/my_stuff
 └─ $ ▶
 ```
 
+- **Welcome banner**: DarkRedHack colors (truecolor), VPN detected from the WireGuard/tun interfaces, no network calls, so a new terminal still opens instantly.
 - **Prompt**: user in red, host in cyan, git branch in green, working directory on its own line, then the `└─ $ ▶` arrow.
 - **Aliases**: `ll`, `la`, `l`, colored `ls`/`grep`, `python` → `python3`, `alert` for desktop notifications after long commands.
 - **AI coding shortcuts**: `clauded` (Claude Code) and `codexd` (Codex CLI), both in unattended mode.
@@ -82,7 +79,7 @@ user @ host - [master]
 
 ### 📊 Conky
 
-A transparent, borderless panel pinned to the top-right corner, refreshed every 3 seconds (Conky 1.10+ syntax):
+A translucent black, borderless panel pinned to the top-right corner, readable over any wallpaper and refreshed every 3 seconds (Conky 1.10+ syntax):
 
 | Section | What it shows |
 |---|---|
@@ -102,11 +99,13 @@ A transparent, borderless panel pinned to the top-right corner, refreshed every 
 
 ### 🩸 DarkRedHack
 
-A dark, squared, red-accented GNOME theme with a "hacker" look, built on top of Yaru-dark. It covers the top bar and menus, GTK3 apps and GTK4/libadwaita apps.
+A dark, squared, red-accented GNOME theme with a "hacker" look, built on top of Yaru-dark. It covers the top bar and menus, GTK3 apps and GTK4/libadwaita apps, the terminals and VS Code. It runs on Ubuntu 26.04 (GNOME 50) and 24.04 (GNOME 46).
 
-- Near-black surfaces, crisp 1px lines instead of soft shadows, corners capped at 2px.
-- Red line under the top bar and every title bar, red toggles, red markers on selected items, red text cursor.
-- JetBrains Mono for the clock, the top bar and window titles.
+- Near-black surfaces, crisp 1px lines instead of soft shadows, no rounded corner anywhere.
+- Terminal-style windows: thin red frame, `─┤ title ├─`, `[_] [□] [×]` window buttons, outlined buttons and fields.
+- Red line under the top bar and every title bar, red toggles, red markers on selected items, red text cursor, red system accent.
+- Chakra Petch as the desktop font, JetBrains Mono in the terminals.
+- DarkRedHack profiles for GNOME Terminal, Ptyxis, Alacritty and kitty, and a DarkRedHack color theme and profile for VS Code.
 - Snap, Flatpak and Electron apps stay dark too.
 
 ![bg](https://img.shields.io/badge/%230a0a0b-background-0a0a0b?style=flat-square)
@@ -185,8 +184,11 @@ for f in bashrc conkyrc vimrc Xdefaults xinitrc; do
   ln -sf "$PWD/$f" ~/.$f
 done
 
-# GNOME theme (Ubuntu 24.04 / GNOME 46)
+# GNOME theme (Ubuntu 26.04 / GNOME 50, also 24.04 / GNOME 46)
 (cd DarkRedHack && ./install.sh)
+
+# Wallpapers, into your Pictures folder (whatever it is called in your language)
+mkdir -p "$(xdg-user-dir PICTURES)/wallpapers" && cp wallpapers/* "$(xdg-user-dir PICTURES)/wallpapers/"
 
 # Classic apps
 mkdir -p ~/.irssi ~/.moc/themes ~/.fluxbox/styles ~/img
@@ -194,7 +196,7 @@ cp irssi/* ~/.irssi/
 cp moc/config moc/moc_keymap_marslo ~/.moc/ && cp moc/theme/darkblood ~/.moc/themes/
 cp fluxbox/init fluxbox/keys fluxbox/menu fluxbox/startup ~/.fluxbox/
 cp -r fluxbox/style/* ~/.fluxbox/styles/
-cp images/* ~/img/
+cp images/* wallpapers/* ~/img/
 ```
 
 > [!NOTE]
@@ -225,7 +227,7 @@ cp images/* ~/img/
 | 2012 | **Gentoo** | Fluxbox | First commit of this repo: everything compiled from source, first Fluxbox styles |
 | 2012 | **Arch Linux** | Fluxbox | DarkRedArch and DarkBlueArch styles, custom root menu, urxvt, irssi, MOC |
 | 2017 | **Fedora Workstation** | | Conky ported to Fedora, multi-monitor fix |
-| 2024 → today | **Ubuntu 24.04 LTS** | GNOME 46 | DarkRedHack theme, laptop-aware Conky, git-aware prompt, AI coding CLIs |
+| 2024 → today | **Ubuntu 24.04 → 26.04 LTS** | GNOME 46 → 50 | DarkRedHack theme, laptop-aware Conky, git-aware prompt, AI coding CLIs |
 
 <sub>Years come from this repository's commit history.</sub>
 
@@ -237,7 +239,7 @@ cp images/* ~/img/
 
 | Category | Software |
 |---|---|
-| Desktop | GNOME 46 + DarkRedHack, Conky, Warp terminal |
+| Desktop | GNOME 50 + DarkRedHack, Conky, Ptyxis, Warp terminal |
 | Browsers | Google Chrome, Firefox, Chromium |
 | Editors & IDEs | VS Code, Sublime Text, Vim, Android Studio, Godot |
 | AI & CLI | Claude Code, GitHub CLI, AWS CLI, ngrok, uv |
@@ -286,7 +288,8 @@ my_stuff/
 │   └── style/          DarkRedArch, DarkBlueArch
 ├── irssi/              config + darkblood theme
 ├── moc/                config, keymap, darkblood theme
-└── images/             wallpapers + avatar
+├── wallpapers/         wallpapers
+└── images/             avatar
 ```
 
 </details>
