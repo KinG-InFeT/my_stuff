@@ -109,8 +109,11 @@ def recolor_png(paths):
     for path in paths:
         with Image.open(path) as source:
             image = source.convert("RGBA")
-        image.putdata([(*map_rgb(r, g, b), a) for r, g, b, a in image.getdata()])
-        image.save(path)
+        pixels = image.tobytes()
+        mapped = bytearray()
+        for i in range(0, len(pixels), 4):
+            mapped += bytes(map_rgb(*pixels[i:i + 3])) + pixels[i + 3:i + 4]
+        Image.frombytes("RGBA", image.size, bytes(mapped)).save(path)
 
 
 if __name__ == "__main__":

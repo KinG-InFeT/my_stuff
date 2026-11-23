@@ -35,8 +35,8 @@ stage, #panel { font-family: Chakra Petch, Ubuntu Sans, sans-serif; }
   border-left-width: 2px;
   border-left-color: @drh_red; }
 
-/* Workspace dots in the top bar: red bars. */
-#panel .panel-button#panelActivities .workspace-dot { background-color: @drh_red; }
+/* Workspace dots in the top bar: red bars (Yaru 26.04 forces its white with !important). */
+#panel .panel-button#panelActivities .workspace-dot { background-color: @drh_red !important; }
 
 /* Top bar buttons: red tint on hover, red underline while open. */
 #panel .panel-button:focus,

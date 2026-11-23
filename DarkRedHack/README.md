@@ -23,11 +23,12 @@ It covers the whole desktop: the top bar and menus (GNOME Shell), GTK3 apps and 
 
 ## Requirements
 
-- Ubuntu 24.04 with GNOME 46 (the theme is built from Ubuntu's Yaru-dark theme). Newer libadwaita versions (1.6+) are handled too,
-  see [libadwaita versions](#libadwaita-versions).
+- Ubuntu 26.04 with GNOME 50 (the theme is built from Ubuntu's Yaru-dark theme). Ubuntu 24.04 with GNOME 46 works too: the
+  script adapts to the installed libadwaita and GNOME Shell, see [libadwaita versions](#libadwaita-versions).
 - `sudo` rights. With passwordless sudo the install runs without any prompt; otherwise sudo asks for the password once.
 - Internet access on the first install, to download the Chakra Petch font from the Google Fonts repository on GitHub.
-- An X11 session for a fully automatic activation. On Wayland everything is installed too, but the top bar theme needs a log out and log in.
+- The first time, the top bar theme needs a log out and log in (GNOME 50 runs on Wayland only; on an X11 session of Ubuntu 24.04,
+  `Alt+F2` → `r` is enough).
 
 ## Install
 
@@ -41,21 +42,21 @@ From a zip: `unzip DarkRedHack.zip && cd DarkRedHack && bash install.sh`.
 The script is unattended and can be run again at any time: it rebuilds the theme and reloads it. It does the following:
 
 1. **Packages**: installs Yaru, the *User Themes* GNOME Shell extension, the JetBrains Mono font, Pillow (to recolor PNG images),
-   `curl`, `zip` (to package the VS Code theme) and `xdotool` (used for the automatic Shell restart).
+   `curl` and `zip` (to package the VS Code theme).
 2. **Font** (first install only): downloads Chakra Petch (regular, medium, semibold, bold and the OFL license) into
    `~/.local/share/fonts/ChakraPetch/`.
 3. **Backup** (first install only): saves the current look (GTK theme, color scheme, Shell theme, extension state and any existing
    `~/.config/gtk-3.0/gtk.css` / `~/.config/gtk-4.0/gtk.css`) in `~/.config/darkredhack-theme/`.
 4. **Build**: turns Yaru-dark into DarkRedHack with `recolor.py` (CSS, SVG and PNG recolor + square corners) and adds the
    extra stylesheets, with the colors taken from `palette.css`.
-5. **Activate**: forces the dark color scheme, keeps `Yaru-dark` as GTK theme, sets Chakra Petch as interface, document and
-   window title font, selects DarkRedHack as Shell theme and enables the User Themes extension.
+5. **Activate**: forces the dark color scheme, sets the red system accent, the red Yaru icons and the stock `Yaru-red-dark` GTK
+   theme (see [Why it is always dark](#why-it-is-always-dark)), sets Chakra Petch as interface, document and window title font,
+   selects DarkRedHack as Shell theme and enables the User Themes extension.
 6. **Terminals**: for each terminal found (GNOME Terminal, Ptyxis, Alacritty, kitty) it writes the DarkRedHack colors and makes
    them the default profile. See [Terminals](#terminals).
 7. **VS Code** (when installed): installs the DarkRedHack theme and creates the *DarkRedHack* profile. See [VS Code](#vs-code).
 8. **Shell restart**: GNOME Shell only sees a newly installed extension or font after a restart. When one was just installed,
-   on X11 the script triggers the restart by itself (same as `Alt+F2` → `r`: open windows are kept); on Wayland it asks you to log
-   out and back in.
+   the script asks you to log out and back in (on X11, `Alt+F2` → `r` keeps the open windows).
 
 Already open apps pick up the new look when you reopen them.
 
@@ -78,9 +79,14 @@ Already open apps pick up the new look when you reopen them.
 
 - The Shell and GTK3 stylesheets are built from Yaru-**dark** only, and the GTK4 stylesheet redefines every libadwaita color as dark.
 - The install forces the system color scheme to dark (`prefer-dark`).
-- The GTK theme name stays `Yaru-dark` on purpose. Snap/Flatpak and Electron apps (Slack, Firefox, Spotify, …) cannot read
-  custom themes from your home folder: with a custom GTK theme name they would fall back to the light default theme.
-  Keeping `Yaru-dark` means they stay dark, while normal apps get the DarkRedHack look through the user stylesheets.
+- The GTK theme stays a stock Yaru theme on purpose: `Yaru-red-dark` (plain `Yaru-dark` where the red variant does not exist).
+  Snap/Flatpak and Electron apps (Slack, Firefox, Spotify, …) cannot read custom themes from your home folder: with a custom GTK
+  theme name they would fall back to the light default theme. With Yaru they stay dark, while normal apps get the DarkRedHack look
+  through the user stylesheets. The red variant matches the red accent: Ubuntu itself switches to it when the accent turns red.
+- The system accent is red and the icons are `Yaru-red-dark`, so sandboxed apps use red rather than Ubuntu's orange.
+- GNOME 47+ Shell themes take their accent from the system setting (`-st-accent-color`): the build replaces it with the palette red.
+- Snap apps built on the GNOME platform (Slack, for example) link `~/.config/gtk-3.0/gtk.css` into their sandbox, so their title
+  bars use the DarkRedHack window buttons too. They read it when they start: restart them after `./install.sh`.
 
 Do not switch *Settings → Appearance* to *Light*: Ubuntu would change the GTK theme and sandboxed apps would turn light.
 If it happens, run `./install.sh` again.
@@ -139,13 +145,14 @@ variables, because Flathub runtimes ship libadwaita 1.6 or later.
 ```
 
 It restores exactly what was saved at the first install (GTK theme, color scheme, Shell theme, User Themes extension on/off,
-your previous `gtk.css` files, the previous fonts and default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch
+your previous `gtk.css` files, the previous fonts, accent color, icon theme and default terminal profiles) and deletes every DarkRedHack file, the Chakra Petch
 font, the terminal profiles and the VS Code theme and profile included (workspaces go back to the Default profile) (VS Code must be closed for the profile; if it is open,
-delete *DarkRedHack* from its Profiles menu). No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
+delete *DarkRedHack* from its Profiles menu). Settings you had never changed go back to the system default (Ubuntu's own,
+such as Yaru and Ubuntu Sans). No restart is needed: the top bar switches back immediately, apps when you reopen them. The installed packages are kept: they change nothing once the theme is removed.
 To remove them too:
 
 ```bash
-sudo apt remove gnome-shell-extensions fonts-jetbrains-mono xdotool
+sudo apt remove gnome-shell-extensions fonts-jetbrains-mono
 ```
 
 ### Manual revert (if the backup folder is gone)
@@ -216,6 +223,13 @@ In GTK3 the extra rules live in the same file as the whole recolored Yaru styles
 specific as Yaru's (e.g. Yaru styles window buttons with `.titlebar button.titlebutton:not(.appmenu).close`). GTK4 loads the user
 stylesheet with a higher priority than the theme, so any matching selector wins there.
 
+Yaru 26.04 forces a few Shell colors with `!important` (the workspace dots, for example): `shell-extra.css` needs `!important`
+too to override them.
+
+The `[×]` brackets of the window buttons are a `border-image`, not background lines: Chromium/Electron apps that draw their
+own title bar with GTK (Slack, for example) force `background-size: contain` on those buttons, which would turn background
+lines into a filled square hiding the icon.
+
 GTK CSS cannot move the window title: the title bar always centers it, whatever the stylesheet says.
 
 Errors show up in the session log: `journalctl --user -f -o cat | grep -i -E 'theme|parse'`.
@@ -223,10 +237,11 @@ Errors show up in the session log: `journalctl --user -f -o cat | grep -i -E 'th
 ## Troubleshooting
 
 - **The top bar did not change**: check `gnome-extensions info user-theme@gnome-shell-extensions.gcampax.github.com` (state must
-  be *ACTIVE*). If it is unknown, the Shell has not restarted yet: press `Alt+F2`, type `r`, press Enter (X11) or log out and in (Wayland).
+  be *ACTIVE*). If it is unknown, the Shell has not restarted yet: log out and in (on X11: `Alt+F2`, type `r`, press Enter).
 - **The top bar is not in Chakra Petch**: the Shell loads fonts only when it starts. Restart it as above.
-- **An app is still light, or still has round buttons**: reopen it. Snap/Flatpak/Electron apps use Yaru-dark, not DarkRedHack:
-  they stay dark but without the red touches.
+- **An app is still light, or still has round or grey window buttons**: reopen it; Electron apps such as Slack load the window
+  buttons only when they start. Snap/Flatpak apps that do not link the user stylesheets use the stock Yaru theme: they stay dark
+  with red accents, but without the DarkRedHack shapes.
 - **After an Ubuntu update the theme looks off**: run `./install.sh` again to rebuild it from the updated Yaru-dark.
 - **A terminal is not in the DarkRedHack colors**: open a new window from the launcher, or pick the *DarkRedHack* profile in the
   terminal preferences. Terminals installed after the theme need `./install.sh` again.

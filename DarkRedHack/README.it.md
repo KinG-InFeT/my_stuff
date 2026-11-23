@@ -24,12 +24,12 @@ Copre tutto il desktop: barra in alto e menu (GNOME Shell), app GTK3 e app GTK4/
 
 ## Requisiti
 
-- Ubuntu 24.04 con GNOME 46 (il tema è costruito a partire da Yaru-dark, il tema di Ubuntu). Sono gestite anche le versioni più
-  recenti di libadwaita (1.6+), vedi [Versioni di libadwaita](#versioni-di-libadwaita).
+- Ubuntu 26.04 con GNOME 50 (il tema è costruito a partire da Yaru-dark, il tema di Ubuntu). Funziona anche Ubuntu 24.04 con
+  GNOME 46: lo script si adatta a libadwaita e GNOME Shell installati, vedi [Versioni di libadwaita](#versioni-di-libadwaita).
 - Permessi `sudo`. Con sudo senza password l'installazione non chiede nulla; altrimenti sudo chiede la password una volta.
 - Connessione a Internet alla prima installazione, per scaricare il font Chakra Petch dal repository di Google Fonts su GitHub.
-- Una sessione X11 per l'attivazione completamente automatica. Su Wayland viene installato tutto lo stesso, ma per il tema
-  della barra in alto serve uscire e rientrare nella sessione.
+- La prima volta, per il tema della barra in alto serve uscire e rientrare nella sessione (GNOME 50 gira solo su Wayland; in una
+  sessione X11 di Ubuntu 24.04 basta `Alt+F2` → `r`).
 
 ## Installazione
 
@@ -43,22 +43,21 @@ Partendo dallo zip: `unzip DarkRedHack.zip && cd DarkRedHack && bash install.sh`
 Lo script non richiede interventi e si può rilanciare in qualsiasi momento: ricostruisce il tema e lo ricarica. Fa questo:
 
 1. **Pacchetti**: installa Yaru, l'estensione di GNOME Shell *User Themes*, il font JetBrains Mono, Pillow (per ricolorare le
-   immagini PNG), `curl`, `zip` (per impacchettare il tema di VS Code) e `xdotool` (serve per il riavvio automatico della Shell).
+   immagini PNG), `curl` e `zip` (per impacchettare il tema di VS Code).
 2. **Font** (solo alla prima installazione): scarica Chakra Petch (regular, medium, semibold, bold e la licenza OFL) in
    `~/.local/share/fonts/ChakraPetch/`.
 3. **Backup** (solo alla prima installazione): salva l'aspetto attuale (tema GTK, schema colori, tema della Shell, stato
    dell'estensione ed eventuali `~/.config/gtk-3.0/gtk.css` / `~/.config/gtk-4.0/gtk.css` già presenti) in `~/.config/darkredhack-theme/`.
 4. **Costruzione**: trasforma Yaru-dark in DarkRedHack con `recolor.py` (ricolorazione di CSS, SVG e PNG + angoli squadrati) e
    aggiunge i fogli di stile extra, con i colori presi da `palette.css`.
-5. **Attivazione**: forza lo schema colori scuro, mantiene `Yaru-dark` come tema GTK, imposta Chakra Petch come font
-   dell'interfaccia, dei documenti e dei titoli delle finestre, seleziona DarkRedHack come tema della Shell e abilita l'estensione
-   User Themes.
+5. **Attivazione**: forza lo schema colori scuro, imposta l'accento di sistema rosso, le icone Yaru rosse e il tema GTK standard
+   `Yaru-red-dark` (vedi [Perché è sempre scuro](#perché-è-sempre-scuro)), imposta Chakra Petch come font dell'interfaccia, dei
+   documenti e dei titoli delle finestre, seleziona DarkRedHack come tema della Shell e abilita l'estensione User Themes.
 6. **Terminali**: per ogni terminale trovato (GNOME Terminal, Ptyxis, Alacritty, kitty) scrive i colori DarkRedHack e li rende
    il profilo predefinito. Vedi [Terminali](#terminali).
 7. **VS Code** (se installato): installa il tema DarkRedHack e crea il profilo *DarkRedHack*. Vedi [VS Code](#vs-code).
 8. **Riavvio della Shell**: GNOME Shell vede un'estensione o un font appena installati solo dopo un riavvio. Quando ne è appena
-   stato installato uno, su X11 lo script lo fa da solo (come `Alt+F2` → `r`: le finestre aperte restano); su Wayland chiede di
-   uscire e rientrare nella sessione.
+   stato installato uno, lo script chiede di uscire e rientrare nella sessione (su X11, `Alt+F2` → `r` tiene aperte le finestre).
 
 Le app già aperte prendono il nuovo aspetto quando le riapri.
 
@@ -82,9 +81,17 @@ Le app già aperte prendono il nuovo aspetto quando le riapri.
 - I fogli di stile della Shell e di GTK3 sono costruiti solo dalla variante **scura** di Yaru, e quello GTK4 ridefinisce
   come scuri tutti i colori di libadwaita.
 - L'installazione forza lo schema colori di sistema su scuro (`prefer-dark`).
-- Il nome del tema GTK resta `Yaru-dark` di proposito. Le app Snap/Flatpak ed Electron (Slack, Firefox, Spotify, …) non
-  possono leggere i temi personalizzati dalla tua home: con un nome di tema GTK personalizzato ripiegherebbero sul tema
-  chiaro di default. Con `Yaru-dark` restano scure, mentre le app normali prendono l'aspetto DarkRedHack dai fogli di stile utente.
+- Il tema GTK resta di proposito un tema Yaru standard: `Yaru-red-dark` (o `Yaru-dark` dove la variante rossa non esiste). Le app
+  Snap/Flatpak ed Electron (Slack, Firefox, Spotify, …) non possono leggere i temi personalizzati dalla tua home: con un nome di
+  tema GTK personalizzato ripiegherebbero sul tema chiaro di default. Con Yaru restano scure, mentre le app normali prendono
+  l'aspetto DarkRedHack dai fogli di stile utente. La variante rossa va con l'accento rosso: Ubuntu stesso la sceglie quando
+  l'accento diventa rosso.
+- L'accento di sistema è rosso e le icone sono `Yaru-red-dark`, così le app isolate usano il rosso invece dell'arancione di Ubuntu.
+- I temi della Shell da GNOME 47 in poi prendono l'accento dall'impostazione di sistema (`-st-accent-color`): la costruzione lo
+  sostituisce con il rosso della palette.
+- Le app Snap basate sulla piattaforma GNOME (Slack, per esempio) collegano `~/.config/gtk-3.0/gtk.css` dentro il loro ambiente
+  isolato, quindi anche le loro barre del titolo usano i pulsanti finestra DarkRedHack. Lo leggono all'avvio: riavviale dopo
+  `./install.sh`.
 
 Non passare a *Chiaro* in *Impostazioni → Aspetto*: Ubuntu cambierebbe il tema GTK e le app Snap/Flatpak diventerebbero chiare.
 Se succede, rilancia `./install.sh`.
@@ -143,14 +150,15 @@ scritto per il Flatpak di Ptyxis usa sempre le variabili, perché i runtime di F
 ```
 
 Ripristina esattamente quanto salvato alla prima installazione (tema GTK, schema colori, tema della Shell, estensione
-User Themes attiva o no, i tuoi `gtk.css` precedenti, i font e i profili predefiniti dei terminali precedenti) e cancella tutti i file di DarkRedHack,
+User Themes attiva o no, i tuoi `gtk.css` precedenti, i font, il colore d'accento, il tema delle icone e i profili predefiniti dei terminali precedenti) e cancella tutti i file di DarkRedHack,
 compresi il font Chakra Petch, i profili dei terminali e il tema e il profilo di VS Code (i workspace tornano al profilo Default) (per il profilo VS Code deve essere
 chiuso; se è aperto, elimina *DarkRedHack* dal suo menu Profili).
-Non serve riavviare: la barra in alto torna subito com'era, le app quando le riapri. I pacchetti installati restano: senza il
+Le impostazioni che non avevi mai cambiato tornano al predefinito del sistema
+(quello di Ubuntu, come Yaru e Ubuntu Sans). Non serve riavviare: la barra in alto torna subito com'era, le app quando le riapri. I pacchetti installati restano: senza il
 tema non cambiano nulla. Per rimuovere anche quelli:
 
 ```bash
-sudo apt remove gnome-shell-extensions fonts-jetbrains-mono xdotool
+sudo apt remove gnome-shell-extensions fonts-jetbrains-mono
 ```
 
 ### Ripristino manuale (se la cartella di backup non c'è più)
@@ -222,6 +230,13 @@ selettore specifico almeno quanto quello di Yaru (per esempio Yaru disegna i pul
 `.titlebar button.titlebutton:not(.appmenu).close`). GTK4 carica il foglio di stile utente con priorità più alta del tema,
 quindi lì vince qualsiasi selettore che corrisponde.
 
+Yaru 26.04 impone alcuni colori della Shell con `!important` (per esempio i punti dei workspace): per cambiarli anche
+`shell-extra.css` deve usare `!important`.
+
+Le parentesi `[×]` dei pulsanti della finestra sono un `border-image`, non linee di sfondo: le app Chromium/Electron che
+disegnano la propria barra del titolo con GTK (per esempio Slack) impongono `background-size: contain` su quei pulsanti, e
+trasformerebbero le linee di sfondo in un quadrato pieno che nasconde l'icona.
+
 Il CSS di GTK non può spostare il titolo della finestra: la barra del titolo lo centra sempre, qualunque cosa dica il foglio di stile.
 
 Gli errori compaiono nel log della sessione: `journalctl --user -f -o cat | grep -i -E 'theme|parse'`.
@@ -229,11 +244,12 @@ Gli errori compaiono nel log della sessione: `journalctl --user -f -o cat | grep
 ## Risoluzione dei problemi
 
 - **La barra in alto non è cambiata**: controlla `gnome-extensions info user-theme@gnome-shell-extensions.gcampax.github.com`
-  (lo stato deve essere *ACTIVE*). Se l'estensione risulta sconosciuta, la Shell non si è ancora riavviata: premi `Alt+F2`,
-  scrivi `r` e premi Invio (X11), oppure esci e rientra nella sessione (Wayland).
+  (lo stato deve essere *ACTIVE*). Se l'estensione risulta sconosciuta, la Shell non si è ancora riavviata: esci e rientra nella
+  sessione (su X11: premi `Alt+F2`, scrivi `r` e premi Invio).
 - **La barra in alto non è in Chakra Petch**: la Shell carica i font solo all'avvio. Riavviala come sopra.
-- **Un'app è ancora chiara, o ha ancora pulsanti tondi**: riaprila. Le app Snap/Flatpak/Electron usano Yaru-dark, non
-  DarkRedHack: restano scure ma senza i tocchi di rosso.
+- **Un'app è ancora chiara, o ha ancora pulsanti finestra tondi o grigi**: riaprila; le app Electron come Slack caricano i
+  pulsanti finestra solo all'avvio. Le app Snap/Flatpak che non collegano i fogli di stile utente usano il tema Yaru standard:
+  restano scure con accenti rossi, ma senza le forme DarkRedHack.
 - **Dopo un aggiornamento di Ubuntu il tema ha qualcosa di strano**: rilancia `./install.sh` per ricostruirlo dallo Yaru-dark aggiornato.
 - **Un terminale non ha i colori DarkRedHack**: apri una nuova finestra dal launcher, oppure scegli il profilo *DarkRedHack* nelle
   preferenze del terminale. I terminali installati dopo il tema richiedono di rilanciare `./install.sh`.

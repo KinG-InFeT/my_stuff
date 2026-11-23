@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Remove the DarkRedHack theme and restore the look saved by install.sh. Unattended, no restart needed.
-# Installed packages (User Themes extension, JetBrains Mono, Pillow, curl, xdotool) are kept: they are harmless.
+# Installed packages (User Themes extension, JetBrains Mono, Pillow, curl, zip) are kept: they are harmless.
 set -euo pipefail
 
 SRC="$(cd "$(dirname "$0")" && pwd)"
@@ -12,6 +12,8 @@ GT=/org/gnome/terminal/legacy/profiles:
 GT_UUID=a302d580-50d7-4ed4-bd6f-91974153d618
 PTYXIS_UUID=b49cc603d8794dba877309d3de778fbf
 
+# Put a GSettings key back: the saved value, or the system default when none was saved (the key was not set).
+restore() { if [[ -n $3 ]]; then gsettings set "$1" "$2" "$3"; else gsettings reset "$1" "$2"; fi; }
 # Remove an item from a GSettings string list ("['a', 'b']").
 list_remove() { local list=${1//", '$2'"/}; list=${list//"'$2', "/}; echo "${list//"'$2'"/}"; }
 # Drop the line install.sh added to a terminal config file, and the file itself if nothing else is left in it.
@@ -83,12 +85,12 @@ fi
 for f in "$STATE"/gsettings@*; do
   [[ -f $f ]] || continue
   id=${f##*/gsettings@}
-  gsettings set "${id%@*}" "${id#*@}" "$(< "$f")"
+  restore "${id%@*}" "${id#*@}" "$(< "$f")"
 done
 
 # GTK: original theme and color scheme, our stylesheets out, the previous ones back.
-gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
-gsettings set org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
+restore org.gnome.desktop.interface gtk-theme "$GTK_THEME"
+restore org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
 rm -rf "$HOME/.local/share/themes/DarkRedHack" "$GTK3/darkredhack-assets" "$HOME/.local/share/fonts/ChakraPetch"
 fc-cache -f "$HOME/.local/share/fonts"
 rm -f "$GTK3/gtk.css" "$GTK4/gtk.css"

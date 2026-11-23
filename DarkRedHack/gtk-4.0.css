@@ -80,10 +80,14 @@ window.csd.tiled, window.csd.tiled-top, window.csd.tiled-left, window.csd.tiled-
 }
 window.csd.maximized, window.csd.fullscreen { box-shadow: none; outline: none; }
 
-/* Window buttons: just the bracketed glyph, no round background. */
-windowcontrols > button > image,
-windowcontrols > button:hover > image,
-windowcontrols > button:active > image { background: none; padding: 0; }
+/* Window buttons: the [×] brackets are drawn on the icon (gtk-extra.css); the button itself stays invisible. */
+windowcontrols > button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
 
 /* Text fields: outlined (see gtk-extra.css), red line while typing. */
 spinbutton:not(.flat) {

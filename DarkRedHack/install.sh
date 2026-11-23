@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Install and activate the "DarkRedHack" theme (dark + red, palette from cve.now) on Ubuntu 24.04 / GNOME 46.
+# Install and activate the "DarkRedHack" theme (dark + red, palette from cve.now) on Ubuntu 26.04 / GNOME 50
+# (Ubuntu 24.04 / GNOME 46 works too).
 # Fully unattended (needs passwordless sudo). Safe to run again: it rebuilds and re-applies.
 #
 #   GNOME Shell     -> ~/.local/share/themes/DarkRedHack/gnome-shell  (via the User Themes extension)
@@ -9,8 +10,8 @@
 #   Terminals       -> a DarkRedHack profile for GNOME Terminal and Ptyxis, a color file for Alacritty and kitty
 #   VS Code         -> the DarkRedHack color theme and a DarkRedHack profile (a copy of the Default one)
 #
-# The GTK theme stays "Yaru-dark" and the color scheme is forced to dark, so Snap/Flatpak and
-# Electron apps (Slack, Firefox, ...), which cannot read custom themes, stay dark too.
+# The GTK theme stays a stock Yaru one (Yaru-red-dark, or Yaru-dark) and the color scheme is forced to dark, so
+# Snap/Flatpak and Electron apps (Slack, Firefox, ...), which cannot read custom themes, stay dark too.
 # The look found before the first install is saved in ~/.config/darkredhack-theme: uninstall.sh restores it.
 set -euo pipefail
 
@@ -36,7 +37,7 @@ GT_UUID=a302d580-50d7-4ed4-bd6f-91974153d618
 GT_BUILTIN=b1dcc9dd-5262-4d8d-a863-c897e6d979b9
 PTYXIS_UUID=b49cc603d8794dba877309d3de778fbf
 PACKAGES=(yaru-theme-gtk yaru-theme-gnome-shell gnome-shell-extensions fonts-jetbrains-mono python3-pil curl zip fontconfig
-  libglib2.0-bin dconf-cli xdotool)
+  libglib2.0-bin dconf-cli)
 
 recolor() { python3 -I "$SRC/recolor.py" "$@"; }
 # The GNOME Shell stylesheet has no variables: paste the palette.css values in place of the @drh_* names.
@@ -45,8 +46,8 @@ palette() { sed -E "$(sed -nE 's/^@define-color (drh_[a-z_]+) (.+);$/s|@\1\\b|\2
 list_add() { case $1 in *"'$2'"*) echo "$1" ;; "" | "@as []") echo "['$2']" ;; *) echo "${1%]}, '$2']" ;; esac; }
 # Remember a setting as found the first time, so uninstall.sh can put it back.
 remember() { [[ -f $STATE/$1 ]] || echo "$2" > "$STATE/$1"; }
-# Change a GSettings key of the desktop, remembering its original value.
-gset() { remember "gsettings@$1@$2" "$(gsettings get "$1" "$2")"; gsettings set "$1" "$2" "$3"; }
+# Change a GSettings key of the desktop, remembering the value you had set (empty when it was the system default).
+gset() { remember "gsettings@$1@$2" "$(dconf read "/${1//.//}/$2")"; gsettings set "$1" "$2" "$3"; }
 # A terminal template with the palette colors and the terminal font filled in.
 terminal() {
   palette < "$SRC/terminals/$1" | sed "s|@font_family|$TERMINAL_FONT_FAMILY|g; s|@font_size|$TERMINAL_FONT_SIZE|g"
@@ -85,8 +86,8 @@ if [[ ! -f $STATE/original.env ]]; then
   if [[ -e $GTK4/gtk.css ]]; then mv "$GTK4/gtk.css" "$STATE/gtk4.css.orig"; fi
   enabled=$(gsettings get org.gnome.shell enabled-extensions)
   {
-    printf 'GTK_THEME=%q\n' "$(gsettings get org.gnome.desktop.interface gtk-theme)"
-    printf 'COLOR_SCHEME=%q\n' "$(gsettings get org.gnome.desktop.interface color-scheme)"
+    printf 'GTK_THEME=%q\n' "$(dconf read /org/gnome/desktop/interface/gtk-theme)"
+    printf 'COLOR_SCHEME=%q\n' "$(dconf read /org/gnome/desktop/interface/color-scheme)"
     printf 'SHELL_THEME=%q\n' "$(dconf read /org/gnome/shell/extensions/user-theme/name)"
     printf 'USER_THEME_WAS_ENABLED=%q\n' "$([[ $enabled == *"$USER_THEME"* ]] && echo yes || echo no)"
   } > "$STATE/original.env"
@@ -100,7 +101,9 @@ for f in "$YARU"/gnome-shell/*; do
     *) cp "$f" "$SHELL_DEST/" ;;
   esac
 done
-sed -i 's|resource:///org/gnome/shell/theme/||g' "$SHELL_DEST/gnome-shell.css"
+# GNOME 47+ Shell themes take their accent from the system accent color (-st-accent-color): use the palette red.
+sed -i "s|resource:///org/gnome/shell/theme/||g; s|-st-accent-fg-color|#ffffff|g; s|-st-accent-color|$(echo @drh_red | palette)|g" \
+  "$SHELL_DEST/gnome-shell.css"
 palette < "$SRC/shell-extra.css" >> "$SHELL_DEST/gnome-shell.css"
 
 echo "==> Building the GTK3 and GTK4 stylesheets"
@@ -217,11 +220,22 @@ fi
 
 echo "==> Activating"
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-gsettings set org.gnome.desktop.interface gtk-theme Yaru-dark
 # Chakra Petch for the interface, documents and window titles. The monospace font stays: code editors need one.
 gset org.gnome.desktop.interface font-name "'$FONT_FAMILY $UI_FONT_SIZE'"
 gset org.gnome.desktop.interface document-font-name "'$FONT_FAMILY $UI_FONT_SIZE'"
 gset org.gnome.desktop.wm.preferences titlebar-font "'$FONT_FAMILY Bold $UI_FONT_SIZE'"
+# Red system accent (GNOME 47+) and red Yaru icons: Snap/Flatpak apps, which cannot read our stylesheets, follow them.
+if gsettings range org.gnome.desktop.interface accent-color > /dev/null 2>&1; then
+  gset org.gnome.desktop.interface accent-color "'red'"
+fi
+if [[ -d /usr/share/icons/Yaru-red-dark ]]; then
+  gset org.gnome.desktop.interface icon-theme "'Yaru-red-dark'"
+fi
+# A stock Yaru GTK theme, so Snap/Flatpak and Electron apps stay dark: the red variant, which Ubuntu also picks for the red
+# accent, or plain Yaru-dark where it does not exist.
+gtk_theme=Yaru-dark
+if [[ -d /usr/share/themes/Yaru-red-dark ]]; then gtk_theme=Yaru-red-dark; fi
+gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 # Reset first: the Shell reloads its stylesheet only when the theme name changes.
 dconf reset /org/gnome/shell/extensions/user-theme/name
 sleep 1
@@ -231,14 +245,8 @@ gsettings set org.gnome.shell enabled-extensions "$(list_add "$(gsettings get or
 # A running GNOME Shell only discovers newly installed extensions and fonts when it restarts.
 if [[ $NEW_FONT == no ]] && gnome-extensions info "$USER_THEME" > /dev/null 2>&1; then
   echo "Done: DarkRedHack is active. Reopen apps to see the change."
-elif [[ ${XDG_SESSION_TYPE:-} == x11 && -n ${DISPLAY:-} ]] \
-  && gdbus call --session --dest org.gnome.ScreenSaver --object-path /org/gnome/ScreenSaver \
-       --method org.gnome.ScreenSaver.GetActive 2>/dev/null | grep -q false; then
-  echo "Done: restarting GNOME Shell (same as Alt+F2 -> r, open windows are kept)."
-  xdotool key --clearmodifiers alt+F2
-  sleep 1
-  xdotool type r
-  xdotool key Return
+elif [[ ${XDG_SESSION_TYPE:-} == x11 ]]; then
+  echo "Done: press Alt+F2, type r and Enter to restart GNOME Shell (open windows are kept)."
 else
   echo "Done: log out and back in to activate the GNOME Shell theme."
 fi

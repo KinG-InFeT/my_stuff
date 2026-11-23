@@ -51,8 +51,10 @@ headerbar .title:backdrop {
     linear-gradient(@drh_line_strong, @drh_line_strong);
 }
 
-/* Window buttons drawn as [_] [□] [×]: brackets in the text color, red on hover.
- * GTK3 repeats Yaru's own selectors (.titlebar … .close) so that, coming later, these rules win; GTK4 uses windowcontrols. */
+/* Window buttons drawn as [_] [□] [×]: square brackets in the text color, red on hover.
+ * GTK3 draws them on the button and repeats Yaru's own selectors (.titlebar … .close) so that, coming later, these rules
+ * win. GTK4 stretches the button to the title bar height, so there they go on the icon, which stays square (gtk-4.0.css
+ * clears the button itself). */
 .titlebar button.titlebutton:not(.appmenu).close,
 .titlebar button.titlebutton:not(.appmenu).close:hover,
 .titlebar button.titlebutton:not(.appmenu).close:active,
@@ -65,27 +67,19 @@ headerbar .title:backdrop {
 .titlebar button.titlebutton:not(.appmenu).minimize:hover,
 .titlebar button.titlebutton:not(.appmenu).minimize:active,
 .titlebar button.titlebutton:not(.appmenu).minimize:backdrop,
-windowcontrols > button,
-windowcontrols > button:hover,
-windowcontrols > button:active,
-windowcontrols > button:backdrop {
+windowcontrols > button > image {
   min-width: 0;
   min-height: 0;
   margin: 0 2px;
-  padding: 2px 5px;
-  border: none;
+  padding: 2px;
   box-shadow: none;
   background-color: transparent;
-  background-image:
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor);
-  background-size: 1px 100%, 4px 1px, 4px 1px, 1px 100%, 4px 1px, 4px 1px;
-  background-position: left top, left top, left bottom, right top, right top, right bottom;
-  background-repeat: no-repeat;
+  background-image: none;
+  /* The brackets are a 1px border image: full left and right sides, top and bottom only at the ends. Not a background,
+   * because Chromium/Electron title bars (Slack, …) force "background-size: contain" on these buttons and would
+   * stretch background lines into a filled square that hides the icon. */
+  border: 1px solid transparent;
+  border-image: linear-gradient(to right, currentColor 18%, transparent 18%, transparent 82%, currentColor 82%) 1 / 1px stretch;
 }
 .titlebar button.titlebutton:not(.appmenu),
 windowcontrols > button { color: @drh_muted; }
